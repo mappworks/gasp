@@ -1,0 +1,101 @@
+subprojects {
+  apply plugin: "java"
+  apply plugin: "idea"
+
+  group = "skunkworks"
+  version = "1.0"
+  sourceCompatibility = "1.8"
+
+  repositories {
+    mavenLocal()
+    mavenCentral()
+  }
+
+  configurations {
+    provided
+  }
+
+  sourceSets {
+    main {
+      compileClasspath += configurations.provided
+    }
+  }
+
+  idea {
+    module {
+      scopes.PROVIDED.plus += [configurations.provided]
+    }
+  }
+}
+
+project(":core") {
+  dependencies {
+    compile ("org.springframework:spring-web:$springVersion") {
+        exclude(group: 'commons-logging', module: 'commons-logging')
+    }
+
+    compile "org.springframework:spring-jdbc:$springVersion"
+    compile "com.zaxxer:HikariCP:2.2.5"
+    compile "com.impossibl.pgjdbc-ng:pgjdbc-ng:0.4"
+    compile "org.ini4j:ini4j:0.5.2"
+    compile "org.jasypt:jasypt:1.9.2"
+    compile "com.google.guava:guava:18.0"
+
+    compile "org.slf4j:slf4j-api:$slf4jVersion"
+    compile "org.slf4j:jcl-over-slf4j:$slf4jVersion"
+    compile "org.slf4j:slf4j-log4j12:$slf4jVersion"
+
+    provided "javax.servlet:javax.servlet-api:3.0.1"
+  }
+}
+
+project(":app") {
+  apply plugin: "war"
+
+  task explodedWar(type: Copy) {
+    into "$buildDir/exploded"
+    with war
+  }
+
+  war.dependsOn explodedWar
+  war.archiveName = "jasp.war"
+
+  dependencies {
+    compile project(":core")
+    testCompile "org.eclipse.jetty:jetty-server:$jettyVersion"
+    testCompile "org.eclipse.jetty:jetty-webapp:$jettyVersion"
+  }
+}
+
+project(":cli") {
+  apply plugin: "application"
+
+  applicationName = "jasp"
+  mainClassName = "jasp.cli.JaspCLI"
+
+  applicationDistribution.from(project(":app").buildDir.absolutePath + "/exploded") {
+    into "war"
+    include "**/*"
+    exclude "**/*log4j*"
+    exclude "**/slf4j*"
+  }
+
+  project.startScripts.with {
+    doLast {
+      unixScript.text = unixScript.text.replaceAll("-classpath",
+        '-Dapp.home=\\$APP_HOME $0')
+      windowsScript.text = windowsScript.text.replaceAll("-classpath",
+        '-Dapp.home=%APP_HOME% $0')
+    }
+  }
+
+  dependencies {
+    compile project(":core")
+    //compile 'jline:jline:2.10'
+    compile 'com.beust:jcommander:1.35'
+    compile "org.eclipse.jetty:jetty-server:$jettyVersion"
+    compile "org.eclipse.jetty:jetty-webapp:$jettyVersion"
+  }
+
+  build.dependsOn(installApp)
+}

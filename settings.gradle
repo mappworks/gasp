@@ -1,0 +1,3 @@
+rootProject.name = 'jasp'
+
+include 'core', 'app', 'cli'
