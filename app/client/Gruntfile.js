@@ -14,7 +14,7 @@ String.prototype.endsWith = function(s) {
 
 var app = {
   src: {
-    js: ['app/**/*.js', '!**/*.spec.js'],
+    js: ['app/**/*.js', '!**/*.tests.js'],
     less: ['app/**/*.less'],
     tpl: ['app/**/*.tpl.html']
   },
@@ -207,6 +207,17 @@ module.exports = function(grunt) {
       }
     },
 
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js',
+        options: {
+          files: app.lib.js
+            .concat(['bower_components/angular-mocks/angular-mocks.js'])
+            .concat(app.src.js)
+        }
+      }
+    },
+
     ngAnnotate: {
       options: {
         singleQuotes: true
@@ -245,7 +256,7 @@ module.exports = function(grunt) {
 
       js: {
         files: app.src.js,
-        tasks: ['jshint:js'],
+        tasks: ['jshint:js', 'karma'],
         options: {
           livereload: true
         }
@@ -265,6 +276,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-html2js');
+  grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-ng-annotate');
 
   // tasks

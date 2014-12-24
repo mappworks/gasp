@@ -10,7 +10,13 @@
   "trailing": true,
   "maxlen": 80,
   "globals": {
-   "angular": false
+   "angular": false,
+   "describe": false,
+   "beforeEach": false,
+   "module": false,
+   "it": false,
+   "expect": false,
+   "inject": false
   },
   "-W041": false
 }
