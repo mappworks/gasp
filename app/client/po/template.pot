@@ -1,0 +1,62 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: \n"
+
+#: app/home/home.tpl.html
+msgid "Browse all"
+msgstr ""
+
+#: app/dataset/edit.tpl.html
+#: app/home/home.tpl.html
+msgid "Datasets"
+msgstr ""
+
+#: app/components/topnav/topnav.tpl.html
+msgid "Find"
+msgstr ""
+
+#: app/login/login.tpl.html
+msgid "Login"
+msgstr ""
+
+#: app/components/topnav/topnav.tpl.html
+msgid "Logout"
+msgstr ""
+
+#: app/home/home.tpl.html
+msgid "New"
+msgstr ""
+
+#: app/login/login.tpl.html
+msgid "Password"
+msgstr ""
+
+#: app/login/login.tpl.html
+msgid "Please login to Jasp"
+msgstr ""
+
+#: app/dataset/edit.tpl.html
+msgid "Query Parameters"
+msgstr ""
+
+#: app/dataset/edit.tpl.html
+msgid "Results"
+msgstr ""
+
+#: app/dataset/edit.tpl.html
+msgid "SQL"
+msgstr ""
+
+#: app/dataset/edit.tpl.html
+msgid "Save"
+msgstr ""
+
+#: app/login/login.tpl.html
+msgid "Unable to login. Please try again."
+msgstr ""
+
+#: app/login/login.tpl.html
+msgid "Username"
+msgstr ""

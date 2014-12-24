@@ -1,0 +1,69 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"X-Generator: Poedit 1.7.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: en\n"
+
+#: app/home/home.tpl.html
+msgid "Browse all"
+msgstr "Browse all"
+
+#: app/dataset/edit.tpl.html app/home/home.tpl.html
+msgid "Datasets"
+msgstr "Datasets"
+
+#: app/components/topnav/topnav.tpl.html
+msgid "Find"
+msgstr "Find"
+
+#: app/login/login.tpl.html
+msgid "Login"
+msgstr "Login"
+
+#: app/components/topnav/topnav.tpl.html
+msgid "Logout"
+msgstr "Logout"
+
+#: app/home/home.tpl.html
+msgid "New"
+msgstr "New"
+
+#: app/login/login.tpl.html
+msgid "Password"
+msgstr "Password"
+
+#: app/login/login.tpl.html
+msgid "Please login to Jasp"
+msgstr "Please login to Jasp"
+
+#: app/dataset/edit.tpl.html
+msgid "Query Parameters"
+msgstr "Query Parameters"
+
+#: app/dataset/edit.tpl.html
+msgid "Results"
+msgstr "Results"
+
+#: app/dataset/edit.tpl.html
+msgid "SQL"
+msgstr "SQL"
+
+#: app/dataset/edit.tpl.html
+msgid "Save"
+msgstr "Save"
+
+#: app/login/login.tpl.html
+msgid "Unable to login. Please try again."
+msgstr "Unable to login. Please try again."
+
+#: app/login/login.tpl.html
+msgid "Username"
+msgstr "Username"

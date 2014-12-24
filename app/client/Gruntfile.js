@@ -37,7 +37,8 @@ var app = {
       'angular-xeditable/dist/js/xeditable.js',
       'ng-lodash/build/ng-lodash.js',
       'leaflet/dist/leaflet-src.js',
-      'angular-leaflet-directive/dist/angular-leaflet-directive.js'
+      'angular-leaflet-directive/dist/angular-leaflet-directive.js',
+      'angular-gettext/dist/angular-gettext.js'
     ].map(function(dep) {
       return 'bower_components/' + dep;
     })
@@ -229,11 +230,31 @@ module.exports = function(grunt) {
       }
     },
 
+    nggettext_compile: {
+      all: {
+        options: {
+          module: 'jasp'
+        },
+        files: {
+          'build/i18n.js': ['po/*.po']
+        }
+      }
+    },
+
+    nggettext_extract: {
+      pot: {
+        files: {
+          'po/template.pot': app.src.tpl
+        }
+      },
+    },
+
     uglify: {
       app: {
         files: {
-          'build/app.min.js':
-            ['build/libs.js', 'build/app.js', 'build/app.tpl.js']
+          'build/app.min.js': [
+            'build/libs.js', 'build/app.js', 'build/app.tpl.js', 'build/i18n.js'
+          ]
         }
       }
     },
@@ -260,11 +281,16 @@ module.exports = function(grunt) {
         options: {
           livereload: true
         }
+      },
+      tpl: {
+        files: app.src.tpl,
+        tasks: ['nggettext_extract']
       }
     }
   });
 
   // plugins
+  grunt.loadNpmTasks('grunt-angular-gettext');
   grunt.loadNpmTasks('grunt-connect-proxy');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-concat');
@@ -283,6 +309,6 @@ module.exports = function(grunt) {
   grunt.registerTask('build', ['less', 'copy']);
   grunt.registerTask('start',
     ['build', 'configureProxies:server', 'connect', 'watch']);
-  grunt.registerTask('dist',
-    ['build', 'html2js', 'concat', 'ngAnnotate', 'uglify', 'cssmin']);
+  grunt.registerTask('dist', ['build', 'html2js', 'nggettext_compile', 'concat',
+    'ngAnnotate', 'uglify', 'cssmin']);
 };

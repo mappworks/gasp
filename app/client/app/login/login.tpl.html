@@ -1,23 +1,23 @@
 <div class="jasp-login">
   <div class="login-message">
-    <small>Please login to Jasp</small>.
+    <small translate>Please login to Jasp</small>.
   </div>
-  <div class="alert alert-danger" ng-if="error">
+  <div class="alert alert-danger" ng-if="error" translate>
     Unable to login. Please try again.
   </div>
   <form ng-submit="login(username, password)">
     <div class="form-group">
-      <label for="username">Username</label>
+      <label for="username" translate>Username</label>
       <input name="username" type="text" class="form-control" focus="true"
         ng-model="username"></input>
     </div>
     <div class="form-group">
-      <label for="password">Password</label>
+      <label for="password" translate>Password</label>
       <input name="password" type="password" class="form-control"
         ng-model="password"></input>
     </div>
     <div class="pull-right">
-      <button type="submit" class="btn btn-primary">Login</button>
+      <button type="submit" class="btn btn-primary" translate>Login</button>
     </div>
   </form>
 </div>

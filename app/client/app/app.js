@@ -3,7 +3,7 @@ angular.module('jasp', [
   'ui.router',
   'ui.codemirror',
   'ngLodash',
-  'xeditable',
+  'gettext',
   'jasp.core',
   'jasp.login',
   'jasp.home',
