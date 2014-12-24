@@ -1,3 +1,3 @@
-angular.module('jasp.core', [
-  'jasp.event', 'jasp.util', 'jasp.api', 'jasp.auth'
+angular.module('gasp.core', [
+  'gasp.event', 'gasp.util', 'gasp.api', 'gasp.auth'
 ]);

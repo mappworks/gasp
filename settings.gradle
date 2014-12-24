@@ -1,3 +1,3 @@
-rootProject.name = 'jasp'
+rootProject.name = 'gasp'
 
 include 'core', 'app', 'cli'

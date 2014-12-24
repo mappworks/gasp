@@ -64,7 +64,7 @@ project(":app") {
   }
 
   war.dependsOn explodedWar
-  war.archiveName = "jasp.war"
+  war.archiveName = "gasp.war"
 
   dependencies {
     compile project(":core")
@@ -83,8 +83,8 @@ project(":app") {
 project(":cli") {
   apply plugin: "application"
 
-  applicationName = "jasp"
-  mainClassName = "jasp.cli.JaspCLI"
+  applicationName = "gasp"
+  mainClassName = "gasp.cli.GaspCLI"
 
   applicationDistribution.from(project(":app").buildDir.absolutePath + "/exploded") {
     into "war"

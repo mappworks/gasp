@@ -1,7 +1,7 @@
 describe('DatasetEditCtrl', function() {
   var scope, createCtrl, http;
 
-  beforeEach(module('jasp.dataset.edit'));
+  beforeEach(module('gasp.dataset.edit'));
 
   beforeEach(inject(function(
     $controller, $rootScope, $timeout, $log, $q, $httpBackend, _, Api) {

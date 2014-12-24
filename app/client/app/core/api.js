@@ -1,6 +1,6 @@
 
 /* global $*/
-angular.module('jasp.api', [])
+angular.module('gasp.api', [])
 .factory('Api', function($http, $q) {
   var apiRoot = '/api';
 

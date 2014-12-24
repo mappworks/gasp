@@ -1,13 +1,13 @@
-angular.module('jasp', [
+angular.module('gasp', [
   'ui.bootstrap',
   'ui.router',
   'ui.codemirror',
   'ngLodash',
   'gettext',
-  'jasp.core',
-  'jasp.login',
-  'jasp.home',
-  'jasp.dataset'
+  'gasp.core',
+  'gasp.login',
+  'gasp.home',
+  'gasp.dataset'
 ])
 .config(
   function($urlRouterProvider) {

@@ -1,5 +1,5 @@
-angular.module('jasp.home', [
-  'jasp.topnav', 'jasp.core', 'jasp.login', 'jasp.dataset'
+angular.module('gasp.home', [
+  'gasp.topnav', 'gasp.core', 'gasp.login', 'gasp.dataset'
 ])
 .config(
   function($stateProvider) {

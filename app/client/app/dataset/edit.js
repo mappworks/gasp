@@ -1,6 +1,6 @@
 /* global L*/
-angular.module('jasp.dataset.edit', [
-  'jasp.core', 'ngSanitize', 'ui.codemirror', 'ui.select', 'ui.validate',
+angular.module('gasp.dataset.edit', [
+  'gasp.core', 'ngSanitize', 'ui.codemirror', 'ui.select', 'ui.validate',
   'smart-table', 'xeditable', 'leaflet-directive'
 ])
 .controller('DatasetEditCtrl',

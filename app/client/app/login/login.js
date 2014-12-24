@@ -1,5 +1,5 @@
 
-angular.module('jasp.login', [])
+angular.module('gasp.login', [])
 .config(
   function($stateProvider) {
     $stateProvider.state('login', {

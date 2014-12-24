@@ -1,4 +1,4 @@
-angular.module('jasp.topnav', ['ui.bootstrap', 'jasp.event', 'jasp.auth'])
+angular.module('gasp.topnav', ['ui.bootstrap', 'gasp.event', 'gasp.auth'])
   .directive('topnav', function() {
     return {
       restrict: 'E',

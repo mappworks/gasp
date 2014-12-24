@@ -176,9 +176,9 @@ module.exports = function(grunt) {
       app: {
         options: {
           base: 'app',
-          module: 'jasp.templates',
+          module: 'gasp.templates',
           fileFooterString:
-              'angular.module("jasp").requires.push("jasp.templates");',
+              'angular.module("gasp").requires.push("gasp.templates");',
           rename: function(name) {
             // return '/' + name;
             return name;
@@ -233,7 +233,7 @@ module.exports = function(grunt) {
     nggettext_compile: {
       all: {
         options: {
-          module: 'jasp'
+          module: 'gasp'
         },
         files: {
           'build/i18n.js': ['po/*.po']
@@ -306,7 +306,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-ng-annotate');
 
   // tasks
-  grunt.registerTask('build', ['less', 'copy']);
+  grunt.registerTask('build', ['less', 'copy', 'nggettext_extract']);
   grunt.registerTask('start',
     ['build', 'configureProxies:server', 'connect', 'watch']);
   grunt.registerTask('dist', ['build', 'html2js', 'nggettext_compile', 'concat',

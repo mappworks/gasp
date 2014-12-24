@@ -1,5 +1,5 @@
 /* global $ */
-angular.module('jasp.auth', ['jasp.event'])
+angular.module('gasp.auth', ['gasp.event'])
 .factory('Auth', function($http, $q, $state, $rootScope, AppEvent) {
   var Auth = {};
 

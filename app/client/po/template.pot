@@ -34,7 +34,7 @@ msgid "Password"
 msgstr ""
 
 #: app/login/login.tpl.html
-msgid "Please login to Jasp"
+msgid "Please login to gasp"
 msgstr ""
 
 #: app/dataset/edit.tpl.html

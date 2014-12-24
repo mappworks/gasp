@@ -1,10 +1,10 @@
 {
-  "name": "jasp",
+  "name": "gasp",
   "version": "1.0.0",
-  "description": "Jasp Client App",
+  "description": "Gasp Client App",
   "main": "app.js",
   "author": "Justin Deoliveira <jdeolive@gmail.com>",
-  "repository": "http://github.com/jdeolive/jasp",
+  "repository": "http://github.com/jdeolive/gasp",
   "license": "Apache-2.0",
   "scripts": {},
   "devDependencies": {

@@ -1,4 +1,4 @@
-angular.module('jasp.util', ['ngLodash'])
+angular.module('gasp.util', ['ngLodash'])
 .filter('titleOrName', function() {
   return function(obj) {
       return obj.title || obj.name;
