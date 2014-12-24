@@ -1,0 +1,27 @@
+<header class="jasp-topnav">
+  <nav class="navbar" role="navigation">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="" ui-sref="home">
+        gasp!
+      </a>
+    </div>
+    <ul ng-if="session" class="nav navbar-nav pull-right">
+      <li class="search">
+        <div class="form-group">
+          <input type="text" class="form-control" ng-keypress="keypress($event)"
+            placeholder="Find"></input>
+          <i class="fa fa-search"></i>
+        </div>
+      </li>
+      <li dropdown class="dropdown">
+        <a dropdown-toggle href="" class="dropdown-toggle">
+          <i class="fa fa-user"></i> {{session.user}}
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="" ng-click="logout()">Logout</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</header>

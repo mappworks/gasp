@@ -1,25 +1,46 @@
 package jasp.core.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import jasp.core.util.Json;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Base class for model objects.
  */
+@JsonAutoDetect(fieldVisibility = Visibility.ANY)
+@JsonInclude(Include.NON_NULL)
 public class JaspObject {
 
     /**
      * object id
      */
-    Object id;
+    String id;
+
+    /**
+     * creator of the object.
+     */
+    String creator;
 
     /**
      * date/time of object creation.
      */
+    @JsonSerialize(using = Json.DateSerializer.class)
+    @JsonDeserialize(using = Json.DateDeserializer.class)
     Date created;
 
     /**
      * date/time of last object modification.
      */
+    @JsonSerialize(using = Json.DateSerializer.class)
+    @JsonDeserialize(using = Json.DateDeserializer.class)
     Date modified;
 
     /**
@@ -28,9 +49,14 @@ public class JaspObject {
     Metadata meta;
 
     /**
+     * tags
+     */
+    List<Tag> tags;
+
+    /**
      * The object id.
      */
-    public Object id() {
+    public String id() {
         return id;
     }
 
@@ -40,8 +66,26 @@ public class JaspObject {
      * Application code should never call this method.
      * </p>
      */
-    public JaspObject id(Object id) {
+    public JaspObject id(String id) {
         this.id = id;
+        return this;
+    }
+
+    /**
+     * The object creator.
+     */
+    public String creator() {
+        return creator;
+    }
+
+    /**
+     * Sets the object creator.
+     * <p>
+     * Application code should never call this method.
+     * </p>
+     */
+    public JaspObject creator(String creator) {
+        this.creator = creator;
         return this;
     }
 
@@ -90,4 +134,23 @@ public class JaspObject {
         }
         return meta;
     }
+
+    /**
+     * List of tags associated with the object.
+     */
+    public List<Tag> tags() {
+        if (tags == null) {
+            tags = new ArrayList<>();
+        }
+        return tags;
+    }
+
+    /**
+     * Associates a tag with the object.
+     */
+    public JaspObject tag(Tag tag) {
+        tags().add(tag);
+        return this;
+    }
+
 }

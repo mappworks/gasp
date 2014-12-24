@@ -1,0 +1,40 @@
+@import '../vars.less';
+
+.jasp-dataset-edit {
+  margin-top: 10px;
+
+  .header {
+    height: 40px;
+    background: @lighter-gray;
+  }
+
+  .nav-tabs {
+    > li > a {
+      color: @almost-black;
+    }
+  }
+
+  .query-params {
+    margin-top: 5px;
+
+    form {
+      .ui-select-match  {
+        button {
+          padding: 2px 0px;
+        }
+      }
+      input {
+        height: 26px;
+      }
+    }
+
+    table {
+      margin-bottom: 0;
+    }
+  }
+
+  .CodeMirror-wrap {
+    border: @border;
+    border-top: 0;
+  }
+}

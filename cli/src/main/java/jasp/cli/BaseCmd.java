@@ -3,11 +3,7 @@ package jasp.cli;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
-import jasp.core.App;
-import jasp.core.Bootstrap;
-import jasp.core.security.Security;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.PrintWriter;
 
@@ -55,19 +51,10 @@ public abstract class BaseCmd {
         e.printStackTrace(new PrintWriter(cli.console()));
     }
 
-    protected App loadApp() {
-        ClassPathXmlApplicationContext appContext =
-                new ClassPathXmlApplicationContext("classpath:/appContext.xml");
-        appContext.refresh();
-
-        return appContext.getBean(App.class);
-    }
-
-//    protected Security loadSecurity() {
-//        Bootstrap boot = new Bootstrap();
-//        boot.setApplicationContext(new GenericApplicationContext());
+//    protected App loadApp() {
+//        AnnotationConfigApplicationContext appContext = new AnnotationConfigApplicationContext("jasp.core");
+//        appContext.refresh();
 //
-//        App app = boot.app();
-//        return boot.security(app);
+//        return appContext.getBean(App.class);
 //    }
 }

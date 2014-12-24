@@ -1,5 +1,7 @@
 package jasp.core.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.google.common.collect.Maps;
 
 import java.util.Map;
@@ -8,12 +10,20 @@ import java.util.Optional;
 /**
  * Extensible map of key value pairs.
  */
+@JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class Metadata {
 
     /**
      * the key/value pair map
      */
     Map<String,Object> map = Maps.newLinkedHashMap();
+
+    /**
+     * Returns the key value pair map.
+     */
+    public Map<String,Object> map() {
+        return map;
+    }
 
     /**
      * Sets a metadata value.

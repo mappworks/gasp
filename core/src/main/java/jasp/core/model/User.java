@@ -13,7 +13,7 @@ public class User extends JaspObject {
     /**
      * User password.
      */
-    String password;
+    byte[] password;
 
     /**
      * Users full name.
@@ -28,18 +28,18 @@ public class User extends JaspObject {
     }
 
     /**
-     * Sets the digested user password.
+     * Sets the user password.
      * @return This object.
      */
-    public User password(String password) {
+    public User password(byte[] password) {
         this.password = password;
         return this;
     }
 
     /**
-     * The username/login/nick of the user.
+     * The user password.
      */
-    public String password() {
+    public byte[] password() {
         return password;
     }
 

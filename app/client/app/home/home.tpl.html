@@ -1,0 +1,38 @@
+<div class="jasp-home container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+    </div>
+    <div class="col-md-6">
+      <div class="jasp-boxed-list jasp-panel">
+        <div class="panel-header">
+          <i class="icon-table-2"></i> <h5>Datasets</h5>
+          <div class="pull-right">
+            <i class="fa fa-plus-circle"></i>
+            <a href="" ui-sref="dataset.new" >New</a>
+          </div>
+        </div>
+        <ul class="list-unstyled recent-datasets">
+          <li ng-repeat="ds in datasets" ui-sref="dataset.edit({id:ds.id})">
+            <div>
+              <div class="ds-title">
+                <strong>{{ ds | titleOrName }}</strong>
+              </div>
+              <div class="ds-description">
+                <small>{{ds.description}}</small>
+              </div>
+              <div class="ds-modified">
+                <small>
+                  <i class="fa fa-clock-o"></i> {{ds.modified.readable}}
+                </small>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <div class="footer text-right">
+          <i class="fa fa-arrow-circle-right"></i>
+          <a href="" ui-sref="datasets.list">Browse all</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -27,7 +27,7 @@ public class StartCmd extends BaseCmd {
         context.setWar(Paths.get(System.getProperty("app.home"), "war").toString());
 
         handlers.addHandler(context);
-        handlers.addHandler(new ShutdownHandler(stopKey));
+        handlers.addHandler(new ShutdownHandler(server, stopKey));
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {

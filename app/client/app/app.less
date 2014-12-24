@@ -1,0 +1,156 @@
+@import '../bower_components/bootstrap/less/bootstrap.less';
+@import 'assets/icomoon/css/style.css';
+@import 'assets/font-awesome/css/font-awesome.min.css';
+@import 'assets/leaflet/leaflet.css';
+@import (inline) '../bower_components/codemirror/lib/codemirror.css';
+@import (inline) '../bower_components/codemirror/addon/hint/show-hint.css';
+@import (inline) '../bower_components/angular-ui-select/dist/select.css';
+@import (inline) '../bower_components/angular-xeditable/dist/css/xeditable.css';
+
+@import 'vars.less';
+
+.jasp-boxed-list {
+  border: @border;
+  border-radius: 2px;
+
+  .header, .footer {
+    background: @lighter-gray;
+  }
+
+  .footer {
+    padding: 4px;
+    font-size: 12px;
+  }
+
+  ul {
+    margin: 0;
+    li {
+      border-bottom: @border;
+      padding: 6px 4px;
+    }
+  }
+}
+
+input.form-control {
+  border-radius: 2px;
+}
+
+.fa.clickable {
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+[class*='icon'].clickable  {
+  cursor: pointer;
+}
+
+.fa-minus-circle, .fa-times-circle {
+  color: @color-sec-2;
+  &:hover {
+    color: @color-sec-3;
+  }
+}
+
+.fa-plus-circle, .fa-check-circle {
+  color: @color-com-2;
+  &:hover {
+    color: @color-com-3;
+  }
+}
+
+.fa-warning {
+  color: @color-tri-2;
+  &:hover {
+    color: @color-tri-3;
+  }
+}
+
+.fa-info-circle, .fa-question-circle {
+  color: @color-pri-2;
+  &:hover {
+    color: @color-pri-3;
+  }
+}
+
+.icon-cog {
+  font-size: 18px;
+  color: @dark-gray;
+  &:hover {
+    color: lighten(@dark-gray, 10%);
+  }
+}
+
+.fa {
+  // font-size: 20px;
+}
+
+.btn {
+  border-radius: 2px;
+}
+
+.btn-primary {
+  background-color: @color-com-2;
+  border-color: transparent !important;
+
+  &:hover {
+    background-color: @color-com-1;
+  }
+}
+
+.jasp-panel {
+  border: @border;
+  border-radius: 2px;
+
+  .panel-header {
+    padding: 6px 4px;
+    background-color: @lighter-gray;
+    border-bottom: @border;
+
+    h5 {
+      margin: 0;
+      display: inline-block;
+    }
+  }
+}
+
+.editable-text {
+  .editable-buttons {
+    .fa {
+      font-size: 18px;
+      padding: 4px 2px;
+    }
+  }
+}
+
+.editable-click {
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 2px;
+  border: 0;
+  color: initial;
+
+  &:hover {
+    color: initial;
+    background-color: @lighter-gray;
+  }
+}
+
+.jasp-breadcrumb {
+  font-size: 18px;
+  padding-left: 0;
+  list-style: none;
+  margin-left: -5px;
+
+  li {
+    display: inline;
+    padding: 0px 4px;
+
+    .fa {
+      color: @light-gray;
+    }
+  }
+}
+
+

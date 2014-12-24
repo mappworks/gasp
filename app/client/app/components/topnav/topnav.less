@@ -1,0 +1,54 @@
+@import "../../vars.less";
+
+.jasp-topnav {
+  background-color: @color-pri-3;
+  border-bottom: 2px solid @dark-gray;
+
+  nav {
+    margin-bottom: 0;
+  }
+
+  li.dropdown {
+    background-color: transparent !important;
+  }
+
+  a.dropdown-toggle {
+    color: white;
+    text-decoration: none;
+    background-color: transparent !important;
+
+    &:hover {
+      color: @light-gray;
+    }
+  }
+
+  .logo {
+    display: inline-block;
+    width: 32px;
+    height: 52px;
+    background: url('img/logo-32.png') no-repeat;
+  }
+
+  .search {
+    margin-top: 10px;
+
+    input {
+      display: inline-block;
+      width: initial;
+      height: 30px;
+      padding: 2px 25px 2px 6px;
+      font-size: 12px;
+    }
+
+    i {
+      margin-left: -25px;
+      color: @dark-gray;
+    }
+  }
+
+  .navbar-brand {
+    color: white;
+    font-size: 30px;
+  }
+
+}
