@@ -16,7 +16,8 @@
    "module": false,
    "it": false,
    "expect": false,
-   "inject": false
+   "inject": false,
+   "spyOn": false
   },
   "-W041": false
 }
