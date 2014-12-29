@@ -166,7 +166,7 @@ angular.module('gasp.dataset.edit', [
     };
 
     $scope.save = function() {
-      Api.dataset.put($scope.dataset)
+      Api.dataset.update($scope.dataset)
         .then(function(result) {
           if (result.success) {
 

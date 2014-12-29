@@ -34,10 +34,17 @@ angular.module('gasp.api', [])
           url: apiRoot + '/datasets/' + id
         });
       },
-      put: function(dataset) {
+      update: function(dataset) {
         return http({
           method: 'PUT',
           url: apiRoot + '/datasets/' + dataset.id,
+          data: dataset
+        });
+      },
+      create: function(dataset) {
+        return http({
+          method: 'POST',
+          url: apiRoot + '/datasets/',
           data: dataset
         });
       }
