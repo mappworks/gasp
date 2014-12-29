@@ -1,6 +1,6 @@
 package gasp.app.api;
 
-import gasp.app.ex.NotFound;
+import gasp.app.api.ex.NotFound;
 import gasp.core.catalog.Catalog;
 import gasp.core.model.Dataset;
 import org.springframework.http.HttpStatus;
