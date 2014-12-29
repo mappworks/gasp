@@ -16,8 +16,18 @@ angular.module('gasp.home', [
       });
   })
 .controller('HomeCtrl',
-  function($scope, $state, $log, Api, session) {
+  function($scope, $state, $log, $modal, Api, session) {
     $scope.session = session;
+
+    $scope.newDataset = function() {
+      $modal.open({
+        templateUrl: 'dataset/new.modal.tpl.html',
+        controller: 'DatasetNewCtrl',
+        backdrop: 'static'
+      }).result.then(function(newId) {
+        $state.go('dataset.edit', {id: newId});
+      });
+    };
 
     Api.dataset.list({
       sort: 'modified-', limit: 3

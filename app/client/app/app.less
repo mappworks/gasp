@@ -87,9 +87,19 @@ input.form-control, textarea.form-control {
   }
 }
 
-.fa {
-  // font-size: 20px;
+[class*="icon-"] {
+  &.icon-lg {
+    font-size: 40px;
+      .fa {
+        font-size: 16px;
+        margin-left: -12px;
+        vertical-align: sub;
+        border-radius: 10px;
+        background-color: white;
+      }
+  }
 }
+
 
 .btn {
   border-radius: 2px;

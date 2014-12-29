@@ -1,14 +1,22 @@
 <div class="gasp-home container-fluid">
   <div class="row">
     <div class="col-md-6">
+      <ul class="action-list list-unstyled">
+        <li>
+          <i class="icon-table-2 icon-lg">
+            <i class="fa fa-plus-circle"></i>
+          </i>
+          <a href="" ng-click="newDataset()" translate>Create a new dataset</a>
+        </li>
+      </ul>
     </div>
     <div class="col-md-6">
-      <div class="gasp-boxed-list gasp-panel">
+      <div class="gasp-boxed-list gasp-panel" ng-if="datasets.length > 0">
         <div class="panel-header">
           <i class="icon-table-2"></i> <h5 translate>Datasets</h5>
           <div class="pull-right">
             <i class="fa fa-plus-circle"></i>
-            <a href="" ui-sref="dataset.new" translate>New</a>
+            <a href="" ng-click="newDataset()" translate>New</a>
           </div>
         </div>
         <ul class="list-unstyled recent-datasets">

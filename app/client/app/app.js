@@ -4,6 +4,8 @@ angular.module('gasp', [
   'ui.codemirror',
   'ngLodash',
   'gettext',
+  'gasp.topnav',
+  'gasp.erroralert',
   'gasp.core',
   'gasp.login',
   'gasp.home',
