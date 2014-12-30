@@ -4,7 +4,8 @@ angular.module('gasp.dataset.edit', [
   'smart-table', 'xeditable', 'leaflet-directive'
 ])
 .controller('DatasetEditCtrl',
-  function($scope, $state, $stateParams, $timeout, $log, _, leafletData, Api) {
+  function($scope, $state, $stateParams, $timeout, $modal, $log, _, leafletData,
+    Api) {
     $scope.id = $stateParams.id;
 
     // initialize the editor
@@ -175,6 +176,21 @@ angular.module('gasp.dataset.edit', [
 
           }
         });
+    };
+
+    $scope.openSettings = function() {
+      $modal.open({
+        templateUrl: 'dataset/settings.modal.tpl.html',
+        controller: 'DatasetSettingsCtrl',
+        backdrop: 'static',
+        resolve: {
+          dataset: function() {
+            return $scope.dataset;
+          }
+        }
+      }).result.then(function() {
+        // TODO: alert of settings updated
+      });
     };
 
     var task = null;

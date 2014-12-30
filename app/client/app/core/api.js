@@ -47,6 +47,12 @@ angular.module('gasp.api', [])
           url: apiRoot + '/datasets/',
           data: dataset
         });
+      },
+      remove: function(dataset) {
+        return http({
+          method: 'DELETE',
+          url: apiRoot + '/datasets/' + dataset.id
+        });
       }
     }
   };

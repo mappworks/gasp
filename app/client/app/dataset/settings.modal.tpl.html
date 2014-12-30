@@ -1,0 +1,37 @@
+<div class="gasp-dataset-settings">
+  <div class="modal-header">
+    <h5 class="modal-title">Dataset Settings</h5>
+  </div>
+  <div class="modal-body">
+    <form>
+      <error-alert ng-if="error" error="error">
+      </error-alert>
+      <div class="form-group">
+        <label for="name" class="control-label" translate>Name</label>
+        <input type="text" class="form-control" ng-model="dataset.name"></input>
+      </div>
+      <div class="form-group">
+        <label for="title" class="control-label" translate>Title</label>
+        <input type="text" class="form-control" ng-model="dataset.title"></input>
+      </div>
+      <div class="form-group">
+        <label for="description" class="control-label" translate>
+          Description
+        </label>
+        <textarea class="form-control" ng-model="dataset.description"></textarea>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <span ng-if="!confirmDelete">
+      <button class="btn btn-primary" ng-click="save()">Save</button>
+      <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+      <button class="btn btn-danger" ng-click="delete()">Delete</button>
+    </span>
+    <span class="confirm-delete" ng-if="confirmDelete">
+      <span>Are you sure you want to delete this dataset?</span>
+      <button class="btn btn-danger" ng-click="delete()">Yes</button>
+      <button class="btn btn-warning" ng-click="cancelDelete()">No</button>
+    </span>
+  </div>
+</div>

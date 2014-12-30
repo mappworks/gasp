@@ -8,9 +8,30 @@ msgstr ""
 msgid "Browse all"
 msgstr ""
 
+#: app/components/erroralert/erroralert.tpl.html
+msgid "Close"
+msgstr ""
+
+#: app/components/erroralert/erroralert.tpl.html
+msgid "Copy"
+msgstr ""
+
+#: app/home/home.tpl.html
+msgid "Create a new dataset"
+msgstr ""
+
 #: app/dataset/edit.tpl.html
 #: app/home/home.tpl.html
 msgid "Datasets"
+msgstr ""
+
+#: app/dataset/new.modal.tpl.html
+#: app/dataset/settings.modal.tpl.html
+msgid "Description"
+msgstr ""
+
+#: app/components/erroralert/erroralert.tpl.html
+msgid "Error Trace"
 msgstr ""
 
 #: app/components/topnav/topnav.tpl.html
@@ -23,6 +44,11 @@ msgstr ""
 
 #: app/components/topnav/topnav.tpl.html
 msgid "Logout"
+msgstr ""
+
+#: app/dataset/new.modal.tpl.html
+#: app/dataset/settings.modal.tpl.html
+msgid "Name"
 msgstr ""
 
 #: app/home/home.tpl.html
@@ -51,6 +77,11 @@ msgstr ""
 
 #: app/dataset/edit.tpl.html
 msgid "Save"
+msgstr ""
+
+#: app/dataset/new.modal.tpl.html
+#: app/dataset/settings.modal.tpl.html
+msgid "Title"
 msgstr ""
 
 #: app/login/login.tpl.html

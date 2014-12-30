@@ -29,8 +29,7 @@ public class DatasetCtrl extends BaseCtrl {
     @ResponseStatus(value = HttpStatus.CREATED)
     public @ResponseBody Dataset get(@PathVariable String id) throws Exception {
         try (Catalog cat = app.catalog()) {
-            return cat.dataset(id).orElseThrow(() ->
-                new NotFound(format("No dataset with id %s exists", id)));
+            return dataset(id, cat);
         }
     }
 
@@ -49,5 +48,17 @@ public class DatasetCtrl extends BaseCtrl {
             cat.save(dataset);
             return cat.dataset(dataset.id()).get();
         }
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public @ResponseBody void remove(@PathVariable String id) throws Exception {
+        try (Catalog cat = app.catalog()) {
+            cat.remove(dataset(id, cat));
+        }
+    }
+
+    Dataset dataset(String id, Catalog cat) throws Exception {
+        return cat.dataset(id).orElseThrow(() ->
+            new NotFound(format("No dataset with id %s exists", id)));
     }
 }

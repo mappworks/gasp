@@ -16,9 +16,29 @@ msgstr ""
 msgid "Browse all"
 msgstr "Browse all"
 
+#: app/components/erroralert/erroralert.tpl.html
+msgid "Close"
+msgstr "Close"
+
+#: app/components/erroralert/erroralert.tpl.html
+msgid "Copy"
+msgstr "Copy"
+
+#: app/home/home.tpl.html
+msgid "Create a new dataset"
+msgstr "Create a new dataset"
+
 #: app/dataset/edit.tpl.html app/home/home.tpl.html
 msgid "Datasets"
 msgstr "Datasets"
+
+#: app/dataset/new.modal.tpl.html app/dataset/settings.modal.tpl.html
+msgid "Description"
+msgstr "Description"
+
+#: app/components/erroralert/erroralert.tpl.html
+msgid "Error Trace"
+msgstr "Error Trace"
 
 #: app/components/topnav/topnav.tpl.html
 msgid "Find"
@@ -31,6 +51,10 @@ msgstr "Login"
 #: app/components/topnav/topnav.tpl.html
 msgid "Logout"
 msgstr "Logout"
+
+#: app/dataset/new.modal.tpl.html app/dataset/settings.modal.tpl.html
+msgid "Name"
+msgstr "Name"
 
 #: app/home/home.tpl.html
 msgid "New"
@@ -59,6 +83,10 @@ msgstr "SQL"
 #: app/dataset/edit.tpl.html
 msgid "Save"
 msgstr "Save"
+
+#: app/dataset/new.modal.tpl.html app/dataset/settings.modal.tpl.html
+msgid "Title"
+msgstr "Title"
 
 #: app/login/login.tpl.html
 msgid "Unable to login. Please try again."

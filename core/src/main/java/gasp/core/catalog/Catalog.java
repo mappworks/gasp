@@ -145,6 +145,15 @@ public class Catalog extends DbSupport implements AutoCloseable {
         });
     }
 
+    public void remove(Dataset ds) throws Exception {
+        runInTx((cx,s) -> {
+            SQL sql = new SQL("DELETE FROM %s WHERE id = ?", TABLE_DATASET)
+                .p(ds.id())
+                .log(LOG);
+            return s.open(sql.compile(cx)).executeUpdate();
+        });
+    }
+
     @Override
     public void close() {
         fire(Event.DISPOSE, this);

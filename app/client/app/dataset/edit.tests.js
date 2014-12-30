@@ -15,6 +15,7 @@ describe('DatasetEditCtrl', function() {
         $state: {},
         $stateParams: stateParams,
         $timeout: $timeout,
+        $modal: {},
         $log: $log,
         _: _,
         leafletData: {
