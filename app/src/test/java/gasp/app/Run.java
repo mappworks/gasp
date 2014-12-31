@@ -26,7 +26,7 @@ public class Run {
 
         WebAppContext context = new WebAppContext();
         context.setResourceBase("src/main/webapp/");
-        context.setContextPath("/");
+        context.setContextPath("/gasp");
         context.setParentLoaderPriority(true);
         context.setWelcomeFiles(new String[]{"index.html"});
 

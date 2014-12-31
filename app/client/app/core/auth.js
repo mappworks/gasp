@@ -1,11 +1,11 @@
 /* global $ */
-angular.module('gasp.auth', ['gasp.event'])
-.factory('Auth', function($http, $q, $state, $rootScope, AppEvent) {
+angular.module('gasp.auth', ['gasp.constant'])
+.factory('Auth', function($http, $q, $state, $rootScope, App) {
   var Auth = {};
 
   Auth.session = function() {
     var d = $q.defer();
-    $http.get('/auth/session')
+    $http.get(App.BasePath + '/auth/session')
       .success(function(data, status, headers, config) {
         d.resolve(data);
       })
@@ -19,7 +19,7 @@ angular.module('gasp.auth', ['gasp.event'])
     var d = $q.defer();
     Auth.session().then(
       function(session) {
-        $rootScope.$broadcast(AppEvent.Login, session);
+        $rootScope.$broadcast(App.Event.Login, session);
         d.resolve(session);
       },
       function() {
@@ -32,7 +32,7 @@ angular.module('gasp.auth', ['gasp.event'])
     var d = $q.defer();
     $http({
       method: 'POST',
-      url: '/auth/login',
+      url: App.BasePath + '/auth/login',
       data: $.param({
         'username': username,
         'password': password
@@ -51,12 +51,12 @@ angular.module('gasp.auth', ['gasp.event'])
   Auth.logout = function() {
     $http({
       method: 'POST',
-      url: '/auth/logout',
+      url: App.BasePath + '/auth/logout',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     }).success(function(data, status, headers, config) {
-      $rootScope.$broadcast(AppEvent.Logout);
+      $rootScope.$broadcast(App.Event.Logout);
       $state.go('login');
     });
   };

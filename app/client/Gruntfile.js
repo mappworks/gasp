@@ -79,7 +79,7 @@ module.exports = function(grunt) {
             middle.push(require('grunt-connect-proxy/lib/utils').proxyRequest);
 
             middle.push(rw.getMiddleware([{
-              from: '^/app(.*)$', to: '/$1'
+              from: '^/gasp/app(.*)$', to: '/$1'
             }]));
 
             // debug script loader
@@ -117,7 +117,7 @@ module.exports = function(grunt) {
         },
         proxies: ['/api', '/auth'].map(function(path) {
           return {
-            context: path,
+            context: '/gasp' + path,
             host: 'localhost',
             port: 8000
           };

@@ -1,8 +1,8 @@
 
 /* global $*/
 angular.module('gasp.api', [])
-.factory('Api', function($http, $q) {
-  var apiRoot = '/api';
+.factory('Api', function($http, $q, App) {
+  var apiRoot = App.BasePath + '/api';
 
   function http(config) {
      var d = $q.defer();

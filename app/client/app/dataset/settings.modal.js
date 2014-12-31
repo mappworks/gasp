@@ -1,6 +1,6 @@
 angular.module('gasp.dataset.settings', ['gasp.core'])
 .controller('DatasetSettingsCtrl',
-  function($scope, $state, $modalInstance, Api, ConfirmDialog, dataset) {
+  function($scope, $state, $modalInstance, Api, dataset) {
     $scope.dataset = dataset;
     $scope.save = function() {
       Api.dataset.update($scope.dataset).then(

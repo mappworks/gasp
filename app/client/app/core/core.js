@@ -1,3 +1,3 @@
 angular.module('gasp.core', [
-  'gasp.event', 'gasp.util', 'gasp.api', 'gasp.auth'
+  'gasp.constant', 'gasp.util', 'gasp.api', 'gasp.auth'
 ]);

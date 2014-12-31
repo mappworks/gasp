@@ -1,11 +1,12 @@
 describe('DatasetEditCtrl', function() {
-  var scope, createCtrl, http;
+  var scope, createCtrl, http, basePath;
 
   beforeEach(module('gasp.dataset.edit'));
 
   beforeEach(inject(function(
-    $controller, $rootScope, $timeout, $log, $q, $httpBackend, _, Api) {
+    $controller, $rootScope, $timeout, $log, $q, $httpBackend, _, App, Api) {
 
+    basePath = App.BasePath;
     scope = $rootScope.$new();
     http = $httpBackend;
 
@@ -30,7 +31,7 @@ describe('DatasetEditCtrl', function() {
   }));
 
   beforeEach(function() {
-    http.when('GET', '/api/datasets/1').respond(200, {
+    http.when('GET', basePath + '/api/datasets/1').respond(200, {
       name: 'foo',
       query: 'select * from foo',
       params: []
