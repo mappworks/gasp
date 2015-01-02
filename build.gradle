@@ -86,12 +86,12 @@ project(":core") {
 project(":app") {
   apply plugin: "war"
 
-  task explodedWar(type: Copy) {
+  task explodeWar(type: Copy) {
     into "$buildDir/exploded"
     with war
   }
 
-  war.dependsOn explodedWar
+  war.dependsOn explodeWar
   war.archiveName = "gasp.war"
 
   dependencies {
