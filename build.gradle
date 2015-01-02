@@ -22,8 +22,8 @@ subprojects {
   apply plugin: "java"
   apply plugin: "idea"
 
-  group = "skunkworks"
-  version = "1.0"
+  group = "mappworks"
+  version = "0-SNAPSHOT"
   sourceCompatibility = "1.8"
 
   repositories {
@@ -48,7 +48,7 @@ subprojects {
   }
 }
 
-project(":core") {
+project(":gasp-core") {
   processResources {
     filter ReplaceTokens, tokens: [
       "version": project.version,
@@ -83,7 +83,7 @@ project(":core") {
   }
 }
 
-project(":app") {
+project(":gasp-app") {
   apply plugin: "war"
 
   task explodeWar(type: Copy) {
@@ -95,7 +95,7 @@ project(":app") {
   war.archiveName = "gasp.war"
 
   dependencies {
-    compile project(":core")
+    compile project(":gasp-core")
     compile "org.springframework:spring-webmvc:$springVersion"
     testCompile "junit:junit:4.12"
     testCompile "org.springframework:spring-test:$springVersion"
@@ -108,13 +108,15 @@ project(":app") {
   }
 }
 
-project(":cli") {
+project(":gasp-cli") {
   apply plugin: "application"
 
   applicationName = "gasp"
   mainClassName = "gasp.cli.GaspCLI"
 
-  applicationDistribution.from(project(":app").buildDir.absolutePath + "/exploded") {
+  applicationDistribution.from(
+    project(":gasp-app").buildDir.absolutePath + "/exploded"
+  ) {
     into "war"
     include "**/*"
     exclude "**/*log4j*"
@@ -131,7 +133,7 @@ project(":cli") {
   }
 
   dependencies {
-    compile project(":core")
+    compile project(":gasp-core")
     //compile 'jline:jline:2.10'
     compile 'com.beust:jcommander:1.35'
     compile "org.eclipse.jetty:jetty-server:$jettyVersion"

@@ -1,3 +1,6 @@
 rootProject.name = 'gasp'
 
 include 'core', 'app', 'cli'
+rootProject.children.each {
+	it.name = "gasp-" + it.name
+}
