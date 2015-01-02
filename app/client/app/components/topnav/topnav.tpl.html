@@ -1,8 +1,12 @@
 <header class="gasp-topnav">
   <nav class="navbar" role="navigation">
     <div class="navbar-header">
-      <a class="navbar-brand" href="" ui-sref="home">
+      <a class="navbar-brand" href="#" ui-sref="home">
         gasp!
+        <span tooltip="Revision {{appinfo.revision}} built on
+          {{appinfo.timestamp.timestamp|date:'mediumDate'}}" tooltip-placement="right">
+            {{appinfo.version}}
+        </span>
       </a>
     </div>
     <ul ng-if="session" class="nav navbar-nav pull-right">

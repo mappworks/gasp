@@ -21,6 +21,15 @@ angular.module('gasp.api', [])
   }
 
   return {
+    info: {
+      get: function() {
+        return http({
+          method: 'GET',
+          url: apiRoot + '/info'
+        });
+      }
+    },
+
     dataset: {
       list: function(opts) {
         return http({
