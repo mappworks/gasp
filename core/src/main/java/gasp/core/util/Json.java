@@ -27,12 +27,12 @@ public class Json {
     /**
      * Pretty time instance for human readable dates.
      */
-    static PrettyTime PRETTY_TIME = new PrettyTime();
+    public static final PrettyTime PRETTY_TIME = new PrettyTime();
 
     /**
      * ISO-8601 datetime format.
      */
-    static String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssXXX";
+    public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssXXX";
 
     /**
      * The Jasckson object mapper used to serialize / deserialize objects.
