@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.Iterator;
+
 import static java.lang.String.format;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -20,45 +22,43 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class DatasetCtrl extends BaseCtrl {
 
     @RequestMapping(method = RequestMethod.GET)
-    public @ResponseBody Iterable<Dataset> list(Criteria cri) throws Exception {
-        Catalog cat = app.catalog();
-        return cat.datasets(cri.toDbQuery()).finish((x) -> cat.close()).get();
+    public @ResponseBody Iterator<Dataset> list(Criteria cri) throws Exception {
+        return streamWithCatalog((cat) -> cat.datasets(cri.toDbQuery()));
+
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.CREATED)
     public @ResponseBody Dataset get(@PathVariable String id) throws Exception {
-        try (Catalog cat = app.catalog()) {
-            return dataset(id, cat);
-        }
+        return doWithCatalog((cat) -> dataset(id, cat));
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
     public @ResponseBody Dataset create(@RequestBody Dataset dataset) throws Exception {
-        try (Catalog cat = app.catalog()) {
+        return doWithCatalog((cat) -> {
             cat.add(dataset);
             return cat.dataset(dataset.id()).get();
-        }
+        });
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = APPLICATION_JSON_VALUE)
     public @ResponseBody Dataset update(@RequestBody Dataset dataset) throws Exception {
-        try (Catalog cat = app.catalog()) {
+        return doWithCatalog((cat) -> {
             cat.save(dataset);
             return cat.dataset(dataset.id()).get();
-        }
+        });
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public @ResponseBody void remove(@PathVariable String id) throws Exception {
-        try (Catalog cat = app.catalog()) {
+        doWithCatalog((cat) -> {
             cat.remove(dataset(id, cat));
-        }
+            return null;
+        });
     }
 
     Dataset dataset(String id, Catalog cat) throws Exception {
-        return cat.dataset(id).orElseThrow(() ->
-            new NotFound(format("No dataset with id %s exists", id)));
+        return cat.dataset(id).orElseThrow(() -> new NotFound(format("No dataset with id %s exists", id)));
     }
 }

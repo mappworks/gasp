@@ -13,6 +13,7 @@ import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Optional;
@@ -60,22 +61,22 @@ public class Config implements ApplicationContextAware {
      * </ol>
      * </p>
      * <p>
-     *  Config values are identified by a group and a key. For example: <tt>group: "database" key: "host"</tt>.
-     *  This group/key pair is mapped to the above options as follows.
+     *  Config values are identified by a "path". For example: "database", "host". This path is mapped as follows:
      *  <ol>
      *   <li>
-     *       Servlet context parameters: <tt>(group, key) -> upper(GASP_&lt;group>_&lt;key>)</tt>. For example:
+     *       Servlet context parameters: Underscore delimited, uppercased, and prefixed. For example:
      *       <tt>(database, host) -> GASP_DATABASE_HOST</tt>
      *   </li>
      *   <li>
-     *       Java system properties: <tt>(group, key) -> -Dgasp.&lt;group>.&lt;key></tt>. For example:
+     *       Java system properties: Period delimited, lowercased, and prefixed. For example:
      *       <tt>(database, host) -> -Dgasp.database.host</tt>
      *   </li>
      *   <li>
      *       Environment variables: Same as servlet context parameters.
      *   </li>
      *   <li>
-     *      Config file: The group/key are mapped to a section/key of the same name. For example:
+     *      Config file: The first n-1 components are mapped to a group named (period delimited) and the last component
+     *      of the path is mapped to a key in the section. For example:
      *      <tt>(database, host) -></tt>
      *      <pre>
      *      [database]
@@ -85,40 +86,45 @@ public class Config implements ApplicationContextAware {
      *  </ol>
      *
      * </p>
-     * @param group The group of the value.
-     * @param key The key of the value.
+     * @param path The "path"
      *
      * @return The optional config value.
      */
-    public Optional<String> get(String group, String key) {
+    public Optional<String> get(String... path) {
         // first check config delegates
         Optional<String> val = Optional.empty();
 
         if (delegates != null) {
             Iterator<ConfigDelegate> it = delegates.iterator();
             while(it.hasNext() && !val.isPresent()) {
-                val = it.next().get(group, key);
+                val = it.next().get(path);
             }
         }
+
+        String var = "GASP_" + String.join("_", path).toUpperCase();
+        String prop = "gasp." + String.join(".", path).toLowerCase();
 
         // next look in web.xml
         if (!val.isPresent() && appContext instanceof WebApplicationContext) {
             ServletContext servletContext = ((WebApplicationContext) appContext).getServletContext();
-            val = Optional.ofNullable(servletContext.getInitParameter(format("GASP_%S_%S", group, key)));
+            val = Optional.ofNullable(servletContext.getInitParameter(var));
         }
 
         // next look for system property
         if (!val.isPresent()) {
-            val = Optional.ofNullable(System.getProperty(format("gasp.%s.%s", group, key)));
+            val = Optional.ofNullable(System.getProperty(prop));
         }
 
         // next look for environment variable
         if (!val.isPresent()) {
-            val = Optional.ofNullable(System.getenv(format("GASP_%S_%S", group, key)));
+            val = Optional.ofNullable(System.getenv(var));
         }
 
         // finally check ~/.gasp/config
-        if (!val.isPresent()) {
+        if (!val.isPresent() && path.length > 1) {
+            String group = String.join(".", Arrays.copyOfRange(path, 0, path.length-1)).toLowerCase();
+            String key = path[path.length-1];
+
             val = Optional.ofNullable(configFile.get().get(group, key));
         }
 
@@ -126,7 +132,7 @@ public class Config implements ApplicationContextAware {
     }
 
     public interface ConfigDelegate {
-        Optional<String> get(String group, String key);
+        Optional<String> get(String... path);
     }
 
     static class ConfigFile {

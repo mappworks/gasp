@@ -9,7 +9,6 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -37,24 +36,6 @@ public class SQL {
         return this;
     }
 
-    public SQL a(DbQuery q) {
-        if (q == null) {
-            return this;
-        }
-        if (!q.orderBy().isEmpty()) {
-            a(" ORDER BY ");
-            a(q.orderBy().stream().map((s) -> s.col + " " + (s.asc ? "ASC" : "DESC"))
-                    .collect(Collectors.joining(",")));
-        }
-        if (q.offset() != null) {
-            a(format(" OFFSET %d", q.offset()));
-        }
-        if (q.limit() != null) {
-            a(format(" LIMIT %d", q.limit()));
-        }
-        return this;
-    }
-
     public SQL p(Object val) {
         return p(val, Types.OTHER);
     }
@@ -78,16 +59,32 @@ public class SQL {
 
     public SQL log(Logger log) {
         if (log.isDebugEnabled()) {
-            StringBuilder copy = new StringBuilder(buf);
-            int i = -1;
-            Iterator<Arg> a = params.iterator();
-            while((i = copy.indexOf("?", i+1)) > 0 && a.hasNext()) {
-                copy.insert(i, a.next().value);
-            }
 
-            log.debug(copy.toString());
+            log.debug(toLog());
         }
         return this;
+    }
+
+    public SQL trace(Logger log) {
+        if (log.isTraceEnabled()) {
+            log.trace(toLog());
+        }
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return buf.toString();
+    }
+
+    String toLog() {
+        StringBuilder copy = new StringBuilder(buf);
+        int i = -1;
+        Iterator<Arg> a = params.iterator();
+        while((i = copy.indexOf("?", i+1)) > 0 && a.hasNext()) {
+            copy.insert(i, a.next().value);
+        }
+        return copy.toString();
     }
 
     public PreparedStatement compile(Connection cx) throws SQLException {

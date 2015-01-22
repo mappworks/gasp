@@ -1,9 +1,9 @@
 package gasp.app.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.Iterators;
 import gasp.core.catalog.Catalog;
-import gasp.core.db.DbQuery;
-import gasp.core.db.Result;
+import gasp.core.catalog.CatalogQuery;
 import gasp.core.model.Dataset;
 import gasp.core.util.Json;
 import org.junit.Before;
@@ -40,12 +40,11 @@ public class DatasetCtrlTest extends CtrlTestBase {
         Catalog cat = mock(Catalog.class);
         when(app.catalog()).thenReturn(cat);
 
-        when(cat.datasets(isA(DbQuery.class))).thenAnswer((i) -> {
-            Iterable list = Arrays.asList(
+        when(cat.datasets(isA(CatalogQuery.class))).thenAnswer((i) ->
+            Iterators.forArray(
                 new Dataset().query("select * from foo").name("foo").id("1"),
-                new Dataset().query("select * from bar").name("bar").id("2"));
-            return new Result().set(list);
-        });
+                new Dataset().query("select * from bar").name("bar").id("2"))
+        );
 
         MvcResult result = mvc.perform(get("/api/datasets"))
             .andExpect(status().isOk())

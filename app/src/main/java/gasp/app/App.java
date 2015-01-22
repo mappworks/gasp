@@ -6,7 +6,6 @@ import gasp.app.security.AppUser;
 import gasp.core.Config;
 import gasp.core.catalog.Catalog;
 import gasp.core.model.User;
-import gasp.core.util.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -14,14 +13,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.ServletContext;
 import javax.sql.DataSource;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Properties;
 
 /**
  * Global facade for the application.
@@ -64,19 +58,6 @@ public class App {
      * spring application context
      */
     ApplicationContext context;
-
-    /**
-     * meta properties about app
-     */
-    Properties meta = new Properties();
-
-    public App() {
-        try {
-            meta.load(getClass().getResourceAsStream("app.properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public State state() {
         return state;
@@ -154,32 +135,4 @@ public class App {
         dataSourceProvider().release(catalog.dataSource());
         return this;
     }
-
-    public String version() {
-        return meta("version").orElse("Latest");
-    }
-
-    public String revision() {
-        return meta("revision").orElse("HEAD");
-    }
-
-    public Date timestamp() {
-        return meta("timestamp").map((d) -> {
-            try {
-                return new SimpleDateFormat(Json.DATE_FORMAT).parse(d);
-            } catch (ParseException e) {
-                throw new RuntimeException("Error parsing app build timestamp", e);
-            }
-        }).orElse(new Date());
-    }
-
-    Optional<String> meta(String key) {
-        String val = meta.getProperty(key);
-        if (val == null || val.startsWith("@")) {
-            return Optional.empty();
-        }
-
-        return Optional.of(val);
-    }
-
 }

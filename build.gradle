@@ -66,7 +66,8 @@ project(":gasp-core") {
     compile "org.springframework.security:spring-security-web:$springSecurityVersion"
     compile "org.springframework.security:spring-security-config:$springSecurityVersion"
     compile "com.zaxxer:HikariCP:2.2.5"
-    compile "com.impossibl.pgjdbc-ng:pgjdbc-ng:0.4"
+    //compile "com.impossibl.pgjdbc-ng:pgjdbc-ng:0.4"
+    compile "org.postgresql:postgresql:9.3-1102-jdbc41"
     compile "org.ini4j:ini4j:0.5.2"
     compile "org.jasypt:jasypt:1.9.2"
     compile "com.google.guava:guava:18.0"
@@ -75,7 +76,8 @@ project(":gasp-core") {
 
     compile "org.slf4j:slf4j-api:$slf4jVersion"
     compile "org.slf4j:jcl-over-slf4j:$slf4jVersion"
-    compile "org.slf4j:slf4j-log4j12:$slf4jVersion"
+    // compile "org.slf4j:slf4j-log4j12:$slf4jVersion"
+    compile "ch.qos.logback:logback-classic:1.1.2"
 
     provided "javax.servlet:javax.servlet-api:3.0.1"
 

@@ -22,6 +22,11 @@ CREATE TABLE IF NOT EXISTS %scope%gasp_info (
     revision VARCHAR NOT NULL,
     meta JSON
 );;
+INSERT INTO %scope%gasp_info (version, revision)
+SELECT '%version%', '%revision%'
+WHERE NOT EXISTS (
+    SELECT * FROM %scope%gasp_info
+);;
 
 -- dataset table
 CREATE TABLE IF NOT EXISTS %scope%gasp_dataset (

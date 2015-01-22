@@ -1,6 +1,6 @@
 package gasp.app.api;
 
-import gasp.core.db.DbQuery;
+import gasp.core.catalog.CatalogQuery;
 
 import java.util.Arrays;
 
@@ -46,8 +46,8 @@ public class Criteria {
         this.filter = filter;
     }
 
-    public DbQuery toDbQuery() {
-        DbQuery q = new DbQuery();
+    public CatalogQuery toDbQuery() {
+        CatalogQuery q = new CatalogQuery();
         if (page != null && count != null) {
             q.offset(page*count);
         }
