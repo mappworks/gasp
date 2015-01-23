@@ -11,6 +11,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import static java.lang.String.format;
 
@@ -85,7 +86,7 @@ public class SQL {
         int i = -1;
         Iterator<Arg> a = params.iterator();
         while((i = copy.indexOf("?", i+1)) > 0 && a.hasNext()) {
-            copy.insert(i, a.next().value);
+            copy.replace(i, i+1, Optional.ofNullable(a.next().value).map((v) -> v.toString()).orElse("null"));
         }
         return copy.toString();
     }
