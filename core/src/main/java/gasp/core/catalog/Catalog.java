@@ -53,12 +53,12 @@ public class Catalog extends DbSupport {
     }
 
     public void init() throws Exception {
-        run(new Task<Void>() {
+        run(new CatalogTask<Void>() {
             @Override
-            public Void run(Connection cx) throws Exception {
+            protected Void doRun(Connection cx) throws Exception {
                 try {
                     ResultSet rs =
-                        open(open(new SQL("SELECT * FROM %s", scope(TABLE_INFO)).trace(LOG).compile(cx)).executeQuery());
+                        open(open(new SQL("SELECT * FROM %s", TABLE_INFO).trace(LOG).compile(cx)).executeQuery());
                     // TODO: check for upgrade
                 }
                 catch(SQLException e) {
@@ -67,7 +67,7 @@ public class Catalog extends DbSupport {
                     vars.put("scope", schema.map((schema) -> schema + ".").orElse(""));
                     vars.put("version", Gasp.version());
                     vars.put("revision", Gasp.revision());
-                    runScript("init.sql", Catalog.class, ";;", vars);
+                    runScript("init.sql", Catalog.class, ";;", vars, cx);
                     fire(Event.INIT, this);
                 }
                 return null;
@@ -76,10 +76,10 @@ public class Catalog extends DbSupport {
     }
 
     public Iterator<Dataset> datasets(CatalogQuery q) throws Exception {
-        return stream(new Task<ResultSet>() {
+        return stream(new CatalogTask<ResultSet>() {
             @Override
-            public ResultSet run(Connection cx) throws Exception {
-                SQL sql = new SQL("SELECT * FROM %s", scope(TABLE_DATASET));
+            protected ResultSet doRun(Connection cx) throws Exception {
+                SQL sql = new SQL("SELECT * FROM %s", TABLE_DATASET);
                 q.apply(sql);
 
                 return open(sql.log(LOG).compile(cx)).executeQuery();
@@ -88,11 +88,11 @@ public class Catalog extends DbSupport {
     }
 
     public Optional<Dataset> dataset(final String id) throws Exception {
-        return Optional.ofNullable(run(new Task<Dataset>() {
+        return Optional.ofNullable(run(new CatalogTask<Dataset>() {
             @Override
-            public Dataset run(Connection cx) throws Exception {
+            protected Dataset doRun(Connection cx) throws Exception {
                 SQL sql = new SQL()
-                    .a("SELECT * FROM %s WHERE id = ?", scope(TABLE_DATASET))
+                    .a("SELECT * FROM %s WHERE id = ?::uuid", TABLE_DATASET)
                     .p(id)
                     .log(LOG);
 
@@ -107,13 +107,13 @@ public class Catalog extends DbSupport {
     }
 
     public void add(Dataset ds) throws Exception {
-        runInTransaction(new Task<Dataset>() {
+        runInTransaction(new CatalogTask<Dataset>() {
             @Override
-            public Dataset run(Connection cx) throws Exception {
+            protected Dataset doRun(Connection cx) throws Exception {
                 // insert into object
                 StringBuilder cols =
-                    new StringBuilder(format("INSERT INTO %s (id, name, query", scope(TABLE_DATASET)));
-                SQL sql = new SQL(" VALUES (?,?,?")
+                    new StringBuilder(format("INSERT INTO %s (id, name, query", TABLE_DATASET));
+                SQL sql = new SQL(" VALUES (?::uuid,?,?")
                     .p(newId())
                     .p(ds.name())
                     .p(ds.query());
@@ -121,12 +121,12 @@ public class Catalog extends DbSupport {
 
                 if (ds.title() != null) {
                     cols.append(", title");
-                    sql.p(ds.title());
+                    sql.a(",?").p(ds.title());
                 }
 
                 if (ds.description() != null) {
                     cols.append(", description");
-                    sql.p(ds.title());
+                    sql.a(",?").p(ds.title());
                 }
 
                 if (!ds.meta().map().isEmpty()) {
@@ -146,12 +146,12 @@ public class Catalog extends DbSupport {
     }
 
     public void save(Dataset ds) throws Exception {
-        runInTransaction(new Task<Integer>() {
+        runInTransaction(new CatalogTask<Integer>() {
             @Override
-            public Integer run(Connection cx) throws Exception {
+            protected Integer doRun(Connection cx) throws Exception {
                 // insert into object
                 SQL sql = new SQL("UPDATE %s SET name = ?, title = ?, description = ?, query = ?,  meta = ?" +
-                    " WHERE id = ?", scope(TABLE_DATASET))
+                    " WHERE id = ?", TABLE_DATASET)
                     .p(ds.name())
                     .p(ds.title())
                     .p(ds.description())
@@ -165,10 +165,10 @@ public class Catalog extends DbSupport {
     }
 
     public void remove(Dataset ds) throws Exception {
-        runInTransaction(new Task<Integer>() {
+        runInTransaction(new CatalogTask<Integer>() {
             @Override
-            public Integer run(Connection cx) throws Exception {
-                SQL sql = new SQL("DELETE FROM %s WHERE id = ?", scope(TABLE_DATASET))
+            protected Integer doRun(Connection cx) throws Exception {
+                SQL sql = new SQL("DELETE FROM %s WHERE id = ?::uuid", TABLE_DATASET)
                     .p(ds.id())
                     .log(LOG);
                 return open(sql.compile(cx)).executeUpdate();
@@ -192,5 +192,26 @@ public class Catalog extends DbSupport {
                 LOG.warn("Listener threw exception on event: " + e, t);
             }
         }
+    }
+
+    /**
+     * Custom task that ensures statements run against the proper schema.
+     */
+    abstract class CatalogTask<T> extends Task<T> {
+
+        @Override
+        public final T run(Connection cx) throws Exception {
+            // first thing we do is set the search_path based on
+            // the configured schema
+            if (schema.isPresent()) {
+                String s = schema.get();
+                open(new SQL("CREATE SCHEMA IF NOT EXISTS %s", s).log(LOG).compile(cx)).execute();
+                open(new SQL("SET search_path TO %s", s).log(LOG).compile(cx)).execute();
+            }
+
+            return doRun(cx);
+        }
+
+        protected abstract T doRun(Connection cx) throws Exception;
     }
 }
