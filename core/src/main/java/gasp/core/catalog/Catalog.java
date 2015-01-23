@@ -25,7 +25,7 @@ import java.util.UUID;
 
 import static java.lang.String.format;
 
-public class Catalog extends DbSupport implements AutoCloseable {
+public class Catalog extends DbSupport {
 
     public static enum Event {INIT, DISPOSE};
 
@@ -129,19 +129,9 @@ public class Catalog extends DbSupport implements AutoCloseable {
                     sql.p(ds.title());
                 }
 
-                if (!ds.params().isEmpty()) {
-                    cols.append(", params");
-                    sql.a(",?").p(Json.to(ds.params()));
-                }
-
                 if (!ds.meta().map().isEmpty()) {
                     cols.append(", meta");
                     sql.a(",?").p(Json.to(ds.meta()));
-                }
-
-                if (ds.folder() != null) {
-                    cols.append(", folder_id");
-                    sql.p(ds.folder().id());
                 }
 
                 sql.a(") RETURNING id");
@@ -160,15 +150,13 @@ public class Catalog extends DbSupport implements AutoCloseable {
             @Override
             public Integer run(Connection cx) throws Exception {
                 // insert into object
-                SQL sql = new SQL("UPDATE %s SET name = ?, title = ?, description = ?, query = ?, params = ?, meta = ?" +
-                    ", folder_id = ? WHERE id = ?", scope(TABLE_DATASET))
+                SQL sql = new SQL("UPDATE %s SET name = ?, title = ?, description = ?, query = ?,  meta = ?" +
+                    " WHERE id = ?", scope(TABLE_DATASET))
                     .p(ds.name())
                     .p(ds.title())
                     .p(ds.description())
                     .p(ds.query())
-                    .p(!ds.params().isEmpty() ? Json.to(ds.params()) : null)
                     .p(!ds.meta().map().isEmpty() ? Json.to(ds.meta().map()) : null)
-                    .p(ds.folder() != null ? ds.folder().id() : null)
                     .p(ds.id());
 
                 return open(sql.log(LOG).compile(cx)).executeUpdate();
@@ -186,11 +174,6 @@ public class Catalog extends DbSupport implements AutoCloseable {
                 return open(sql.compile(cx)).executeUpdate();
             }
         });
-    }
-
-    @Override
-    public void close() {
-        fire(Event.DISPOSE, this);
     }
 
     String newId() {

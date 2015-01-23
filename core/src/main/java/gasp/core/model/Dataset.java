@@ -1,15 +1,14 @@
 package gasp.core.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * A named dataset.
  */
-public class Dataset extends ContainedObject {
+public class Dataset extends NamedObject {
 
     String query;
-    List<QueryParam> params = new ArrayList<>();
 
     public String query() {
         return query;
@@ -20,13 +19,49 @@ public class Dataset extends ContainedObject {
         return this;
     }
 
-    public List<QueryParam> params() {
-        return params;
+    // overrides to type narrow
+    @Override
+    public Dataset id(String id) {
+        return (Dataset) super.id(id);
     }
 
-    public Dataset param(QueryParam param) {
-        params.add(param);
-        return this;
+    @Override
+    public Dataset creator(String creator) {
+        return (Dataset) super.creator(creator);
     }
 
+    @Override
+    public Dataset created(Date created) {
+        return (Dataset) super.created(created);
+    }
+
+    @Override
+    public Dataset modified(Date modified) {
+        return (Dataset) super.modified(modified);
+    }
+
+    @Override
+    public Dataset tag(String tag) {
+        return (Dataset) super.tag(tag);
+    }
+
+    @Override
+    public Dataset name(String name) {
+        return (Dataset) super.name(name);
+    }
+
+    @Override
+    public Dataset title(String title) {
+        return (Dataset) super.title(title);
+    }
+
+    @Override
+    public Dataset description(String description) {
+        return (Dataset) super.description(description);
+    }
+
+    @Override
+    public Dataset meta(Map<String, Object> kvp) {
+        return (Dataset) super.meta(kvp);
+    }
 }

@@ -5,7 +5,7 @@ import gasp.app.db.DataSourceProvider;
 import gasp.core.catalog.Catalog;
 import gasp.core.db.Task;
 import gasp.core.util.GaspIterator;
-import gasp.core.util.UnsafeFunction;
+import gasp.core.util.Function;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.sql.DataSource;
@@ -21,7 +21,7 @@ public class BaseCtrl {
     @Autowired
     protected App app;
 
-    protected <T> T doWithCatalog(UnsafeFunction<Catalog,T> f) throws Exception {
+    protected <T> T doWithCatalog(Function<Catalog,T> f) throws Exception {
         Catalog cat = app.catalog();
         try {
             return f.apply(cat);
@@ -31,7 +31,7 @@ public class BaseCtrl {
         }
     }
 
-    protected <T> GaspIterator<T> streamWithCatalog(UnsafeFunction<Catalog,Iterator<T>> f) throws Exception {
+    protected <T> GaspIterator<T> streamWithCatalog(Function<Catalog,Iterator<T>> f) throws Exception {
         Catalog cat = app.catalog();
         try {
             return new GaspIterator<>(f.apply(cat)).onFinish((v) -> app.release(cat));
@@ -76,7 +76,7 @@ public class BaseCtrl {
      *
      * @return The result of the task.
      */
-    protected <T> T run(UnsafeFunction<Consumer<Task<T>>, Task<T>> f) throws Exception {
+    protected <T> T run(Function<Consumer<Task<T>>, Task<T>> f) throws Exception {
         DataSourceProvider dsp = app.dataSourceProvider();
         DataSource ds = dsp.get(app.user().get(), app);
 

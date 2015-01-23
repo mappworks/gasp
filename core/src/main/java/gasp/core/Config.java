@@ -38,6 +38,34 @@ public class Config implements ApplicationContextAware {
 
     ConfigFile configFile;
 
+    /**
+     * Returns the system property for the specified config path.
+     * <p>
+     *  The system property is the result of joining all components of the path
+     *  with a '.' and prefixing with 'gasp.'. For example:
+     *  <pre>
+     *    toSysProp('database', 'host') -> 'gasp.database.host'
+     *  </pre>
+     * </p>
+     */
+    public static String toSysProp(String... path) {
+        return "gasp." + String.join(".", path).toLowerCase();
+    }
+
+    /**
+     * Returns the environment variable for the specified config path.
+     * <p>
+     *  The system property is the result of joining all components of the path
+     *  with a '_' and prefixing with 'GASP_'. For example:
+     *  <pre>
+     *    toSysProp('database', 'host') -> 'GASP_DATABASE_HOST'
+     *  </pre>
+     * </p>
+     */
+    public static String toEnvVar(String... path) {
+        return "GASP_" + String.join("_", path).toUpperCase();
+    }
+
     public Config() {
         configFile = new ConfigFile(Paths.get(System.getProperty("user.home"), ".gasp", "config").toFile());
     }
@@ -101,8 +129,8 @@ public class Config implements ApplicationContextAware {
             }
         }
 
-        String var = "GASP_" + String.join("_", path).toUpperCase();
-        String prop = "gasp." + String.join(".", path).toLowerCase();
+        String var = toEnvVar(path);
+        String prop = toSysProp(path);
 
         // next look in web.xml
         if (!val.isPresent() && appContext instanceof WebApplicationContext) {

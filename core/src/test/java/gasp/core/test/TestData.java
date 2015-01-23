@@ -1,17 +1,13 @@
 package gasp.core.test;
 
-import gasp.core.db.SQL;
-import gasp.core.db.Task;
-
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.zip.GZIPInputStream;
 
-import static gasp.core.db.DbUtil.*;
-import static java.lang.String.format;
+import static gasp.core.db.DbUtil.runScript;
 
 public class TestData {
 
@@ -19,20 +15,12 @@ public class TestData {
 
     Connection cx;
 
-    public static TestData get(Connection cx) throws SQLException {
-        return new TestData(cx);
+    public static TestData get(DataSource db) throws SQLException {
+        return new TestData(db.getConnection());
     }
 
     TestData(Connection cx) throws SQLException {
         this.cx = cx;
-        run(new Task<Void>() {
-            @Override
-            public Void run(Connection cx) throws Exception {
-                open(new SQL("CREATE SCHEMA IF NOT EXISTS %s", SCHEMA).compile(cx)).executeUpdate();
-                open(new SQL("SET search_path TO %s", SCHEMA).compile(cx)).executeUpdate();
-                return null;
-            }
-        }, cx);
     }
 
     /**
@@ -45,17 +33,6 @@ public class TestData {
      */
     public TestData setUpStates() throws IOException, SQLException {
         runScript(load("states.sql"), null, null, cx);
-        return this;
-    }
-
-    public TestData tearDown() throws SQLException {
-        run(new Task<Void>() {
-            @Override
-            public Void run(Connection cx) throws Exception {
-                open(new SQL("DROP SCHEMA %s CASCADE", SCHEMA).compile(cx)).executeUpdate();
-                return null;
-            }
-        }, cx);
         return this;
     }
 

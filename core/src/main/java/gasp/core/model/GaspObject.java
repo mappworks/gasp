@@ -11,6 +11,7 @@ import gasp.core.util.Json;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Base class for model objects.
@@ -51,7 +52,7 @@ public class GaspObject {
     /**
      * tags
      */
-    List<Tag> tags;
+    List<String> tags;
 
     /**
      * The object id.
@@ -136,9 +137,17 @@ public class GaspObject {
     }
 
     /**
+     * Sets a set of metadata key value pairs.
+     */
+    public GaspObject meta(Map<String,Object> kvp) {
+        meta().map().putAll(kvp);
+        return this;
+    }
+
+    /**
      * List of tags associated with the object.
      */
-    public List<Tag> tags() {
+    public List<String> tags() {
         if (tags == null) {
             tags = new ArrayList<>();
         }
@@ -148,7 +157,7 @@ public class GaspObject {
     /**
      * Associates a tag with the object.
      */
-    public GaspObject tag(Tag tag) {
+    public GaspObject tag(String tag) {
         tags().add(tag);
         return this;
     }
