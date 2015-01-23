@@ -139,25 +139,17 @@ public class DbUtil {
      * Runs a task against a database within a transaction.
      */
     public static <T> T runInTransaction(Task<T> t, Connection cx) throws SQLException {
-        // get current auto commit state
-        boolean autoCommit = cx.getAutoCommit();
-        try {
-            try (Task<T> q = t) {
-                cx.setAutoCommit(false);
-                try {
-                    T result = q.run(cx);
-                    cx.commit();
-                    return result;
-                } catch (Exception e) {
-                    cx.rollback();
-                    Throwables.propagateIfInstanceOf(e, SQLException.class);
-                    throw Throwables.propagate(e);
-                }
+        try (Task<T> q = t) {
+            cx.setAutoCommit(false);
+            try {
+                T result = q.run(cx);
+                cx.commit();
+                return result;
+            } catch (Exception e) {
+                cx.rollback();
+                Throwables.propagateIfInstanceOf(e, SQLException.class);
+                throw Throwables.propagate(e);
             }
-        }
-        finally {
-            // restore current auto commit state
-            cx.setAutoCommit(autoCommit);
         }
     }
 
