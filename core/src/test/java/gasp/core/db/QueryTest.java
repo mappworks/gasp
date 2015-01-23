@@ -1,8 +1,8 @@
 package gasp.core.db;
 
+import com.vividsolutions.jts.geom.Geometry;
 import gasp.core.test.Db;
 import gasp.core.test.TestData;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -13,6 +13,9 @@ import java.util.Collections;
 import static com.google.common.collect.Iterators.size;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class QueryTest {
 
@@ -54,6 +57,18 @@ public class QueryTest {
 
             assertThat(size(q.page(10, null).run(null)), is(10));
             assertThat(size(q.page(null, 40).run(null)), is(12));
+        }
+    }
+
+    @Test
+    public void testGeometry() throws Exception {
+        try (Connection cx = db.conn()) {
+            QueryResult r = Query.build("SELECT geom FROM states").paged().compile(cx).page(1,0).run(null);
+            assertTrue(r.hasNext());
+
+            Object obj = r.next().get(0);
+            assertNotNull(obj);
+            assertThat(obj, instanceOf(Geometry.class));
         }
     }
 }

@@ -52,7 +52,7 @@ public class Query implements AutoCloseable {
             st.setObject(i+1, val);
         }
 
-        return new QueryResult(st.executeQuery());
+        return new QueryResult(st.executeQuery(), this);
     }
 
     @Override
@@ -67,6 +67,7 @@ public class Query implements AutoCloseable {
         static Pattern PARAM_REGEX = Pattern.compile("\\$\\{(\\w+)\\}");
 
         boolean paged = false;
+        boolean raw = false;
         SQL sql;
         List<String> params = new ArrayList<>();
 
@@ -77,6 +78,11 @@ public class Query implements AutoCloseable {
         public QueryBuilder paged() {
             sql.a(" LIMIT ? OFFSET ?");
             paged = true;
+            return this;
+        }
+
+        public QueryBuilder raw() {
+            raw = true;
             return this;
         }
 

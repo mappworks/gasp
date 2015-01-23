@@ -24,13 +24,15 @@ import static gasp.core.db.DbUtil.closeSafe;
 @JsonSerialize(using = Serializer.class)
 public class QueryResult extends AbstractIterator<Row> {
 
+    Query q;
     ResultSet rs;
     Row row;
     Optional<Consumer<Query>> callback = Optional.empty();
 
-    public QueryResult(ResultSet rs) {
+    public QueryResult(ResultSet rs, Query q) {
         this.rs = rs;
-        this.row = new Row(rs);
+        this.q = q;
+        this.row = new Row(rs, this);
     }
 
     public QueryResult then(Consumer<Query> call) {
