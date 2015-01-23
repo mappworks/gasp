@@ -65,17 +65,21 @@ public abstract class DbSupport {
      */
     protected void runScript(String filename, Class<?> scope, String delim, Map<String,String> vars)
         throws IOException, SQLException {
-
         try (
             Connection cx = connection();
         ) {
-            try (InputStream input = scope.getResourceAsStream(filename)) {
-                if (input == null) {
-                    throw new IllegalArgumentException(format("No script %s relative to %s", filename, scope.getName()));
-                }
+            runScript(filename, scope, delim, vars, cx);
+        }
+    }
 
-                DbUtil.runScript(input, delim, vars, cx);
+    protected void runScript(String filename, Class<?> scope, String delim, Map<String,String> vars, Connection cx)
+        throws IOException, SQLException {
+        try (InputStream input = scope.getResourceAsStream(filename)) {
+            if (input == null) {
+                throw new IllegalArgumentException(format("No script %s relative to %s", filename, scope.getName()));
             }
+
+            DbUtil.runScript(input, delim, vars, cx);
         }
     }
 
