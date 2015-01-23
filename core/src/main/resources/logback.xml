@@ -1,4 +1,5 @@
 <configuration>
+    <!-- logger to stdout, catches everything above INFO -->
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%5p - %m%n</pattern>
@@ -7,8 +8,9 @@
             <level>INFO</level>
         </filter>
     </appender>
+
+    <!-- main log file, catches everything above DEBUG -->
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
         <append>true</append>
         <File>${user.home}/.gasp/logs/gasp.log</File>
         <encoder>
@@ -22,11 +24,37 @@
             <MaxFileSize>10MB</MaxFileSize>
         </triggeringPolicy>
     </appender>
+
+    <!-- sql log file, catches only logged sql statements -->
+    <appender name="sql" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
+                <marker>SQL</marker>
+            </evaluator>
+            <OnMismatch>DENY</OnMismatch>
+            <OnMatch>NEUTRAL</OnMatch>
+        </filter>
+
+        <append>true</append>
+        <File>${user.home}/.gasp/logs/sql.log</File>
+        <encoder>
+            <pattern>%d{"HH:mm:ss,SSS"} %c{2}:%L - %m%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <maxIndex>3</maxIndex>
+            <FileNamePattern>${user.home}/.gasp/logs/sql.log.%i</FileNamePattern>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
     <logger name="org.eclipse.jetty" level="WARN"/>
     <logger name="com.zaxxer.hikari" level="WARN"/>
     <logger name="org.springframework" level="WARN"/>
     <root level="DEBUG">
         <appender-ref ref="stdout"/>
         <appender-ref ref="file"/>
+        <appender-ref ref="sql"/>
     </root>
 </configuration>

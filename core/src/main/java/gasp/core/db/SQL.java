@@ -1,6 +1,8 @@
 package gasp.core.db;
 
 import org.slf4j.Logger;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,6 +18,8 @@ import static java.lang.String.format;
  * Utility class for building SQL queries.
  */
 public class SQL {
+
+    static Marker MARKER = MarkerFactory.getMarker("SQL");
 
     StringBuilder buf;
     List<Arg> params;
@@ -59,15 +63,14 @@ public class SQL {
 
     public SQL log(Logger log) {
         if (log.isDebugEnabled()) {
-
-            log.debug(toLog());
+            log.debug(MARKER, toLog());
         }
         return this;
     }
 
     public SQL trace(Logger log) {
         if (log.isTraceEnabled()) {
-            log.trace(toLog());
+            log.trace(MARKER, toLog());
         }
         return this;
     }
