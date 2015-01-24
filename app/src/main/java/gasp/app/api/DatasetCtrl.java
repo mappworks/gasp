@@ -28,7 +28,6 @@ public class DatasetCtrl extends BaseCtrl {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseStatus(value = HttpStatus.CREATED)
     public @ResponseBody Dataset get(@PathVariable String id) throws Exception {
         return doWithCatalog((cat) -> dataset(id, cat));
     }
