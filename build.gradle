@@ -29,6 +29,9 @@ subprojects {
   repositories {
     mavenLocal()
     mavenCentral()
+    maven {
+      url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
   }
 
   configurations {
@@ -62,22 +65,36 @@ project(":gasp-core") {
         exclude(group: 'commons-logging', module: 'commons-logging')
     }
 
+    // spring
     compile "org.springframework:spring-jdbc:$springVersion"
     compile "org.springframework.security:spring-security-web:$springSecurityVersion"
     compile "org.springframework.security:spring-security-config:$springSecurityVersion"
+
+    // database
     compile "com.zaxxer:HikariCP:2.2.5"
     //compile "com.impossibl.pgjdbc-ng:pgjdbc-ng:0.4"
     compile "org.postgresql:postgresql:9.3-1102-jdbc41"
-    compile "org.ini4j:ini4j:0.5.2"
-    compile "org.jasypt:jasypt:1.9.2"
-    compile "com.google.guava:guava:18.0"
-    compile "com.fasterxml.jackson.core:jackson-databind:2.4.4"
-    compile "org.ocpsoft.prettytime:prettytime:1.0.8.Final"
 
+    // spatial
+    compile "com.vividsolutions:jts:1.13"
+
+
+    // logging
     compile "org.slf4j:slf4j-api:$slf4jVersion"
     compile "org.slf4j:jcl-over-slf4j:$slf4jVersion"
     // compile "org.slf4j:slf4j-log4j12:$slf4jVersion"
     compile "ch.qos.logback:logback-classic:1.1.2"
+
+    // utility + miscellaneous
+    compile "org.ini4j:ini4j:0.5.2"
+    compile "org.jasypt:jasypt:1.9.2"
+    compile "com.google.guava:guava:18.0"
+    compile "com.fasterxml.jackson.core:jackson-databind:2.4.4"
+    compile ("com.bedatadriven:jackson-datatype-jts:1.0-SNAPSHOT") {
+      exclude(group: 'com.fasterxml.jackson.core', module: 'jackson-databind')
+      exclude(group: 'com.vividsolutions', module: 'jts')
+    }
+    compile "org.ocpsoft.prettytime:prettytime:1.0.8.Final"
 
     provided "javax.servlet:javax.servlet-api:3.0.1"
 

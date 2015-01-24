@@ -1,5 +1,6 @@
 package gasp.core.util;
 
+import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -39,6 +40,7 @@ public class Json {
      */
     public static ObjectMapper mapper() {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JtsModule());
         return mapper;
     }
 
