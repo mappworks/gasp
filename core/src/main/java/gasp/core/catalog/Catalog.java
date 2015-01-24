@@ -150,8 +150,8 @@ public class Catalog extends DbSupport {
             @Override
             protected Integer doRun(Connection cx) throws Exception {
                 // insert into object
-                SQL sql = new SQL("UPDATE %s SET name = ?, title = ?, description = ?, query = ?,  meta = ?" +
-                    " WHERE id = ?", TABLE_DATASET)
+                SQL sql = new SQL("UPDATE %s SET name = ?, title = ?, description = ?, query = ?,  meta = ?::json" +
+                    " WHERE id = ?::uuid", TABLE_DATASET)
                     .p(ds.name())
                     .p(ds.title())
                     .p(ds.description())
