@@ -37,7 +37,7 @@ public class GaspIterator<T> extends AbstractIterator<T> {
         return null;
     }
 
-    public GaspIterator<T> onFinish(Consumer<Void> callback) {
+    public GaspIterator<T> then(Consumer<Void> callback) {
         onFinish = Optional.ofNullable(callback);
         return this;
     }
