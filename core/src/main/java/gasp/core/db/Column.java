@@ -12,28 +12,37 @@ import static java.lang.String.format;
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class Column {
 
-    final String name;
-    final String type;
+    String name;
+    String type;
 
     @JsonIgnore
-    final int sqlType;
-
-    public Column(String name, String type, int sqlType) {
-        this.name = name;
-        this.type = type;
-        this.sqlType = sqlType;
-    }
+    int sqlType;
 
     public String name() {
         return name;
+    }
+
+    public Column name(String name) {
+        this.name = name;
+        return this;
     }
 
     public String type() {
         return type;
     }
 
+    public Column type(String type) {
+        this.type = type;
+        return this;
+    }
+
     public int sqlType() {
         return sqlType;
+    }
+
+    public Column sqlType(int sqlType) {
+        this.sqlType = sqlType;
+        return this;
     }
 
     @Override

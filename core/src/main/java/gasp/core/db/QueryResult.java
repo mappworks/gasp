@@ -46,7 +46,10 @@ public class QueryResult extends AbstractIterator<Row> {
             ResultSetMetaData meta = rs.getMetaData();
             for (int i = 0; i < meta.getColumnCount(); i++) {
                 int ii = i+1;
-                cols.add(new Column(meta.getColumnName(ii), meta.getColumnTypeName(ii), meta.getColumnType(ii)));
+                cols.add(new Column()
+                    .name(meta.getColumnName(ii))
+                    .type(meta.getColumnTypeName(ii))
+                    .sqlType(meta.getColumnType(ii)));
             }
             return cols;
         }
