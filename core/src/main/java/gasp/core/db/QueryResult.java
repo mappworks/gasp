@@ -21,6 +21,9 @@ import java.util.function.Consumer;
 
 import static gasp.core.db.DbUtil.closeSafe;
 
+/**
+ * Result of a {@link gasp.core.db.Query}.
+ */
 @JsonSerialize(using = Serializer.class)
 public class QueryResult extends AbstractIterator<Row> {
 
@@ -35,11 +38,17 @@ public class QueryResult extends AbstractIterator<Row> {
         this.row = new Row(rs, this);
     }
 
+    /**
+     * Specifies a callback to invoke after the query results have been exhausted.
+     */
     public QueryResult then(Consumer<Query> call) {
         callback = Optional.ofNullable(call);
         return this;
     }
 
+    /**
+     * List of columns contained in the query results.
+     */
     public List<Column> columns() {
         try {
             List<Column> cols = new ArrayList<>();

@@ -1,8 +1,5 @@
 package gasp.core.db;
 
-
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 import gasp.core.catalog.Catalog;
@@ -17,6 +14,13 @@ import java.util.Set;
 
 import static gasp.core.db.DbUtil.run;
 import static gasp.core.db.DbUtil.stream;
+
+/**
+ * Provides metadata about a database.
+ * <p>
+ * Metadata is derived from {@link java.sql.Connection#getMetaData()}.
+ * </p>
+ */
 public class Database {
 
     static final Set<String> FILTERED_TABLES = Sets.newHashSet(
@@ -29,11 +33,19 @@ public class Database {
     Connection cx;
     DatabaseMetaData meta;
 
+    /**
+     * Creates a new instance from the specified connection.
+     */
     public Database(Connection cx) throws SQLException {
         this.cx = cx;
         this.meta = cx.getMetaData();
     }
 
+    /**
+     * List of tables in the database.
+     *
+     * @param schema Optional schema used to constrain returned tables to a specific schema. May be <code>null</code>.
+     */
     public Iterator<Table> tables(String schema) throws SQLException {
         Iterator<Table> it = stream(new Task<ResultSet>() {
             @Override
@@ -45,6 +57,15 @@ public class Database {
         return Iterators.filter(it, (t) -> !FILTERED_TABLES.contains(t.name()));
     }
 
+    /**
+     * Obtains a table by name.
+     *
+     * @param name The name of the table.
+     * @param schema The Optional schema containing the table.
+     *
+     * @return The optional table, present if a match was found.
+     * @throws SQLException
+     */
     public Optional<Table> table(String name, String schema) throws SQLException {
         return Optional.ofNullable(run(new Task<Table>() {
             @Override

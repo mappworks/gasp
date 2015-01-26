@@ -14,6 +14,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Row in the result set of a {@link gasp.core.db.Query}.
+ */
 public class Row {
 
     ResultSet rs;
@@ -24,6 +27,9 @@ public class Row {
         this.result = result;
     }
 
+    /**
+     * All of the values in the row as a list.
+     */
     public List<Object> list() {
         try {
             int n = rs.getMetaData().getColumnCount();
@@ -37,6 +43,12 @@ public class Row {
             throw Throwables.propagate(e);
         }
     }
+
+    /**
+     * Gets the row value for the ith (zero-based) column.
+     *
+     * @param i Zero-based index.
+     */
     public Object get(int i) throws SQLException {
         Object obj = rs.getObject(i+1);
         if (obj instanceof PGobject) {
@@ -61,9 +73,5 @@ public class Row {
         }
 
         return val;
-    }
-
-    public Object get(String name) {
-        return null;
     }
 }

@@ -7,6 +7,9 @@ import java.sql.ResultSet;
 import java.util.Collections;
 import java.util.Map;
 
+/**
+ * Mappers used by {@link Catalog}.
+ */
 class Mappers {
 
     static final Dataset dataset(ResultSet rs) throws Exception {

@@ -9,9 +9,10 @@ import java.util.zip.GZIPInputStream;
 
 import static gasp.core.db.DbUtil.runScript;
 
+/**
+ * Harness for test datasets.
+ */
 public class TestData {
-
-    static String SCHEMA = "gasp_test";
 
     Connection cx;
 

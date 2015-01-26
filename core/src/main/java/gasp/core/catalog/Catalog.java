@@ -25,8 +25,13 @@ import java.util.UUID;
 
 import static java.lang.String.format;
 
+/**
+ * Data access object for the Gasp catalog.
+ * <p>
+ * The catalog provides to persisted datasets.
+ * </p>
+ */
 public class Catalog extends DbSupport {
-
 
     public static final String TABLE_INFO = "gasp_info";
     public static final String TABLE_DATASET = "gasp_dataset";
@@ -53,6 +58,12 @@ public class Catalog extends DbSupport {
         return this;
     }
 
+    /**
+     * Initializes the catalog.
+     * <p>
+     *  In general this method shouldn't be called by app code, just by the framework.
+     * </p>
+     */
     public void init() throws Exception {
         run(new CatalogTask<Void>() {
             @Override
@@ -76,6 +87,11 @@ public class Catalog extends DbSupport {
         });
     }
 
+    /**
+     * Returns a set of datasets as specified by the given query.
+     *
+     * @param q The query.
+     */
     public Iterator<Dataset> datasets(CatalogQuery q) throws Exception {
         return stream(new CatalogTask<ResultSet>() {
             @Override
@@ -88,6 +104,11 @@ public class Catalog extends DbSupport {
         }, Mappers::dataset);
     }
 
+    /**
+     * Returns the optional dataset for the specified id.
+     *
+     * @param id The dataset id.
+     */
     public Optional<Dataset> dataset(final String id) throws Exception {
         return Optional.ofNullable(run(new CatalogTask<Dataset>() {
             @Override
@@ -107,6 +128,11 @@ public class Catalog extends DbSupport {
         }));
     }
 
+    /**
+     * Adds a new dataset to the catalog.
+     *
+     * @param ds The dataset to add.
+     */
     public void add(Dataset ds) throws Exception {
         runInTransaction(new CatalogTask<Dataset>() {
             @Override
@@ -146,6 +172,11 @@ public class Catalog extends DbSupport {
         });
     }
 
+    /**
+     * Saves changed to a dataset back to the catalog.
+     *
+     * @param ds The dataset to save.
+     */
     public void save(Dataset ds) throws Exception {
         runInTransaction(new CatalogTask<Integer>() {
             @Override
@@ -165,13 +196,18 @@ public class Catalog extends DbSupport {
         });
     }
 
+    /**
+     * Removes a dataset from the catalog.
+     *
+     * @param ds The dataset to remove.
+     */
     public void remove(Dataset ds) throws Exception {
         runInTransaction(new CatalogTask<Integer>() {
             @Override
             protected Integer doRun(Connection cx) throws Exception {
                 SQL sql = new SQL("DELETE FROM %s WHERE id = ?::uuid", TABLE_DATASET)
-                    .p(ds.id())
-                    .log(LOG);
+                        .p(ds.id())
+                        .log(LOG);
                 return open(sql.compile(cx)).executeUpdate();
             }
         });

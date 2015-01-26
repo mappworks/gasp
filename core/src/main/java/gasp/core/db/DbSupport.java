@@ -72,6 +72,11 @@ public abstract class DbSupport {
         }
     }
 
+    /**
+     * Runs a script against the database with an existing connection.
+     *
+     * @see #runScript(String, Class, String, java.util.Map)
+     */
     protected void runScript(String filename, Class<?> scope, String delim, Map<String,String> vars, Connection cx)
         throws IOException, SQLException {
         try (InputStream input = scope.getResourceAsStream(filename)) {

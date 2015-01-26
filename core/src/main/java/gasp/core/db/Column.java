@@ -9,6 +9,9 @@ import java.util.Locale;
 
 import static java.lang.String.format;
 
+/**
+ * Database table column.
+ */
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class Column {
 
@@ -18,28 +21,50 @@ public class Column {
     @JsonIgnore
     int sqlType;
 
+    /**
+     * Name of the column.
+     */
     public String name() {
         return name;
     }
 
+    /**
+     * Sets the name of the column.
+     */
     public Column name(String name) {
         this.name = name;
         return this;
     }
 
+    /**
+     * Type name of the column.
+     */
     public String type() {
         return type;
     }
 
+    /**
+     * Sets the type name of the column.
+     */
     public Column type(String type) {
         this.type = type;
         return this;
     }
 
+    /**
+     * SQL type of the column.
+     *
+     * @see java.sql.Types
+     */
     public int sqlType() {
         return sqlType;
     }
 
+    /**
+     * Sets the sql type of the column.
+     *
+     * @see java.sql.Types
+     */
     public Column sqlType(int sqlType) {
         this.sqlType = sqlType;
         return this;

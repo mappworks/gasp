@@ -9,6 +9,9 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.Properties;
 
+/**
+ * Build metadata about the Gasp build.
+ */
 public class Gasp {
 
     /**
@@ -23,14 +26,23 @@ public class Gasp {
         }
     }
 
+    /**
+     * The build version.
+     */
     public static String version() {
         return meta("version").orElse("Latest");
     }
 
+    /**
+     * The git revision.
+     */
     public static String revision() {
         return meta("revision").orElse("HEAD");
     }
 
+    /**
+     * The build timstamp.
+     */
     public static Date timestamp() {
         return meta("timestamp").map((d) -> {
             try {

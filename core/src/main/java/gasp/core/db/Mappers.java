@@ -3,6 +3,9 @@ package gasp.core.db;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Mappers used by this package.
+ */
 class Mappers {
 
     static Table table(ResultSet rs) throws SQLException {
