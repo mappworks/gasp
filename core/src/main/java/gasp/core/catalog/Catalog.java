@@ -27,6 +27,10 @@ import static java.lang.String.format;
 
 public class Catalog extends DbSupport {
 
+
+    public static final String TABLE_INFO = "gasp_info";
+    public static final String TABLE_DATASET = "gasp_dataset";
+
     public static enum Event {INIT, DISPOSE};
 
     public static interface Listener {
@@ -34,9 +38,6 @@ public class Catalog extends DbSupport {
     };
 
     static final Logger LOG = LoggerFactory.getLogger(Catalog.class);
-
-    static final String TABLE_INFO = "gasp_info";
-    static final String TABLE_DATASET = "gasp_dataset";
 
     Optional<String> schema;
     Multimap<Event,Listener> listeners =
@@ -84,7 +85,7 @@ public class Catalog extends DbSupport {
 
                 return open(sql.log(LOG).compile(cx)).executeQuery();
             }
-        }, Mappers.dataset());
+        }, Mappers::dataset);
     }
 
     public Optional<Dataset> dataset(final String id) throws Exception {
@@ -98,7 +99,7 @@ public class Catalog extends DbSupport {
 
                 ResultSet rs = open(open(sql.compile(cx)).executeQuery());
                 if (rs.next()) {
-                    return Mappers.dataset().map(rs);
+                    return Mappers.dataset(rs);
                 }
 
                 return null;
