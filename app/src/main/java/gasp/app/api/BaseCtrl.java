@@ -128,7 +128,12 @@ public class BaseCtrl {
     Optional<MediaType> responseFormat(HttpServletRequest req) {
         // look at accepts header
         Optional<String> header = Optional.ofNullable(req.getHeader(HttpHeaders.ACCEPT));
+
+        // parse and skip if == MediaType.ALL
         Optional<MediaType> type = header.map(MediaType::valueOf).filter((t) -> !t.equals(MediaType.ALL));
-        return Optional.ofNullable(type.orElseGet(() -> MAPPINGS.get(Files.getFileExtension(req.getRequestURI()))));
+
+        // return otherwise look for file extension
+        return Optional.ofNullable(type.orElseGet(() ->
+            MAPPINGS.get(Files.getFileExtension(req.getRequestURI().toLowerCase()))));
     }
 }
