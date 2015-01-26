@@ -19,7 +19,7 @@
           </input> -->
         </div>
         <div class="col-xs-4 text-right">
-          <i class="icon-cog clickable" ng-click="openSettings()"></i>
+          <i class="icon-cog icon-clickable" ng-click="openSettings()"></i>
         </div>
       </div>
       <div>
@@ -27,76 +27,83 @@
       </div>
     </div>
     <div class="col-md-6">
-      <div class="pull-right">
-        <button class="btn btn-primary" ng-click="save()" translate>
-          Save
-        </button>
+      <div class="clearfix">
+        <div class="pull-right">
+          <button class="btn btn-primary" ng-click="save()" translate>
+            Save
+          </button>
+        </div>
       </div>
-      <tabset>
-        <tab select="refreshEditor()">
-          <tab-heading>
-            <i class="icon-code"></i> {{'SQL'|translate}}
-          </tab-heading>
-          <div ui-codemirror="{ onLoad : onEditorLoad }"
-            ui-codemirror-opts="editorOpts" ng-model="dataset.query">
-          </div>
-          <div class="query-params gasp-panel">
-            <div class="panel-header">
-              <h5 translate>Query Parameters</h5>
-              <div class="pull-right">
-                <i class="fa fa-question-circle clickable"></i>
-              </div>
-              <!--label class="checkbox">
-                <input type="checkbox" ng-model="autoDetectParams"></input>
-                Auto-detect from query
-              </label-->
+      <div class="editor">
+        <tabset class="editor-main pull-left">
+          <tab select="refreshEditor()">
+            <tab-heading>
+              <i class="icon-code"></i> {{'SQL'|translate}}
+            </tab-heading>
+            <div ui-codemirror="{ onLoad : onEditorLoad }"
+              ui-codemirror-opts="editorOpts" ng-model="dataset.query">
             </div>
-            <form name="form">
-              <table st-table="dataset.params" class="table table-striped">
-                <!-- <thead>
-                  <tr>
-                    <th width="10%"></th>
-                    <th width="15%">Name</th>
-                    <th width="25%">Type</th>
-                    <th width="25%">Default</th>
-                    <th width="10%"></th>
-                  </tr>
-                </thead> -->
-                <tbody>
-                  <tr ng-repeat="p in dataset.params">
-                    <td class="text-center" width="10%">
-                      <i ng-show="p.warning" class="fa fa-info-circle clickable" 
-                        title="{{p.warning}}"></i>
-                      <i ng-show="p.error" class="fa fa-warning clickable"
-                        title="{{p.error}}"></i>
-                    </td>
-                    <td width="15%">{{p.name}}</td>
-                    <td width="25%">
-                      <param-type ng-model="p.type"></param-type>
-                    </td>
-                    <td width="25%">
-                      <input name="{{p.name}}" placeholder="Default value"
-                        class="form-control" ng-model="p.defaultValue"
-                        ui-validate="{valid: 'isParamValid($value, p)'}"
-                        ui-validate-watch="'p.type'"></input>
-                    </td>
-                    <td class="text-center" width="10%">
-                      <i class="fa fa-minus-circle clickable"
-                        ng-click="removeParam(p)">
-                      </i>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </form>
-          </div>
-        </tab>
-        <tab>
-          <tab-heading>
-            <i class="icon-table-2"></i> {{'Results'|translate}}
-          </tab-heading>
-        </tab>
-      </tabset>
+            <div class="query-params gasp-panel">
+              <div class="panel-header">
+                <h5 translate>Query Parameters</h5>
+                <div class="pull-right">
+                  <i class="fa fa-question-circle clickable"></i>
+                </div>
+                <!--label class="checkbox">
+                  <input type="checkbox" ng-model="autoDetectParams"></input>
+                  Auto-detect from query
+                </label-->
+              </div>
+              <form name="form">
+                <table st-table="dataset.params" class="table table-striped">
+                  <!-- <thead>
+                    <tr>
+                      <th width="10%"></th>
+                      <th width="15%">Name</th>
+                      <th width="25%">Type</th>
+                      <th width="25%">Default</th>
+                      <th width="10%"></th>
+                    </tr>
+                  </thead> -->
+                  <tbody>
+                    <tr ng-repeat="p in dataset.params">
+                      <td class="text-center" width="10%">
+                        <i ng-show="p.warning" class="fa fa-info-circle clickable" 
+                          title="{{p.warning}}"></i>
+                        <i ng-show="p.error" class="fa fa-warning clickable"
+                          title="{{p.error}}"></i>
+                      </td>
+                      <td width="15%">{{p.name}}</td>
+                      <td width="25%">
+                        <param-type ng-model="p.type"></param-type>
+                      </td>
+                      <td width="25%">
+                        <input name="{{p.name}}" placeholder="Default value"
+                          class="form-control" ng-model="p.defaultValue"
+                          ui-validate="{valid: 'isParamValid($value, p)'}"
+                          ui-validate-watch="'p.type'"></input>
+                      </td>
+                      <td class="text-center" width="10%">
+                        <i class="fa fa-minus-circle clickable"
+                          ng-click="removeParam(p)">
+                        </i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </form>
+            </div>
+          </tab>
+          <tab>
+            <tab-heading>
+              <i class="icon-table-2"></i> {{'Results'|translate}}
+            </tab-heading>
+          </tab>
+        </tabset>
+        <div class="editor-sidebar pull-right">
+          <i class="icon-list icon-clickable" ng-click="openSchemaBrowser()"></i>
+        </div>
+      </div>
       <div>
       </div>
     </div>

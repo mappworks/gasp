@@ -38,7 +38,8 @@ var app = {
       'ng-lodash/build/ng-lodash.js',
       'leaflet/dist/leaflet-src.js',
       'angular-leaflet-directive/dist/angular-leaflet-directive.js',
-      'angular-gettext/dist/angular-gettext.js'
+      'angular-gettext/dist/angular-gettext.js',
+      'ng-table/dist/ng-table.js'
     ].map(function(dep) {
       return 'bower_components/' + dep;
     })

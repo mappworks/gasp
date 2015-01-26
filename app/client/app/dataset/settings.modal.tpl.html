@@ -1,6 +1,6 @@
 <div class="gasp-dataset-settings">
   <div class="modal-header">
-    <h5 class="modal-title">Dataset Settings</h5>
+    <h5 class="modal-title" translate>Dataset Settings</h5>
   </div>
   <div class="modal-body">
     <form>
@@ -29,9 +29,11 @@
       <button class="btn btn-danger" ng-click="delete()">Delete</button>
     </span>
     <span class="confirm-delete" ng-if="confirmDelete">
-      <span>Are you sure you want to delete this dataset?</span>
-      <button class="btn btn-danger" ng-click="delete()">Yes</button>
-      <button class="btn btn-warning" ng-click="cancelDelete()">No</button>
+      <span translate>Are you sure you want to delete this dataset?</span>
+      <button class="btn btn-danger" ng-click="delete()" translate>Yes</button>
+      <button class="btn btn-warning" ng-click="cancelDelete()" translate>
+        No
+      </button>
     </span>
   </div>
 </div>

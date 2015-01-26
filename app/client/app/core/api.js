@@ -63,6 +63,22 @@ angular.module('gasp.api', [])
           url: apiRoot + '/datasets/' + dataset.id
         });
       }
+    },
+
+    table: {
+      list: function() {
+        return http({
+          method: 'GET',
+          url: apiRoot + '/tables'
+        });
+      },
+      get: function(name, schema) {
+        var q = schema != null ? $.param({schema: schema}) : '';
+        return http({
+          method: 'GET',
+          url: apiRoot + '/tables/' + name + '?' + q
+        });
+      }
     }
   };
 });

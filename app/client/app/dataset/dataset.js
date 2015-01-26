@@ -1,7 +1,8 @@
 angular.module('gasp.dataset', [
   'gasp.dataset.new',
   'gasp.dataset.edit',
-  'gasp.dataset.settings'
+  'gasp.dataset.settings',
+  'gasp.dataset.schema'
 ])
 .config(function($stateProvider) {
   $stateProvider

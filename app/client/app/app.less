@@ -6,6 +6,7 @@
 @import (inline) '../bower_components/codemirror/addon/hint/show-hint.css';
 @import (inline) '../bower_components/angular-ui-select/dist/select.css';
 @import (inline) '../bower_components/angular-xeditable/dist/css/xeditable.css';
+@import (inline) '../bower_components/ng-table/dist/ng-table.css';
 
 @import 'vars.less';
 
@@ -79,15 +80,8 @@ input.form-control, textarea.form-control {
   }
 }
 
-.icon-cog {
-  font-size: 18px;
-  color: @dark-gray;
-  &:hover {
-    color: lighten(@dark-gray, 10%);
-  }
-}
-
 [class*="icon-"] {
+
   &.icon-lg {
     font-size: 40px;
       .fa {
@@ -97,6 +91,16 @@ input.form-control, textarea.form-control {
         border-radius: 10px;
         background-color: white;
       }
+  }
+
+  &.icon-clickable {
+    padding: 2px;
+    border-radius: 1px;
+
+    &:hover {
+      cursor: pointer;
+      background-color: @lighter-gray;
+    }
   }
 }
 

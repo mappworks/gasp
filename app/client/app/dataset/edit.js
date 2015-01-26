@@ -62,7 +62,6 @@ angular.module('gasp.dataset.edit', [
       },
         tabMode: 'spaces'
     };
-
     $scope.onEditorLoad = function(editor) {
       $scope.editor = editor;
     };
@@ -85,21 +84,8 @@ angular.module('gasp.dataset.edit', [
               'OpenStreetMap</a>'
         }).addTo(map);
 
-      var hydda =
-        L.tileLayer(
-          'http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
-          minZoom: 0,
-          maxZoom: 18,
-          attribution: 'Tiles courtesy of ' +
-            '<a href="http://openstreetmap.se/" target="_blank">'+
-              'OpenStreetMap Sweden'+
-            '</a> &mdash; Map data &copy;'+
-            '<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
-
       var baseMaps = {
-        'OSM Classic': osm,
-        'OSM Hydda': hydda
+        'OSM Classic': osm
       };
 
       L.control.layers(baseMaps).addTo(map);
@@ -139,30 +125,26 @@ angular.module('gasp.dataset.edit', [
         matches.push(match[1]);
       }
 
-      // get parameter names
-      var paramNames = $scope.dataset.params.map(function(p) {
-        return p.name;
-      });
+      $scope.params = matches;
+      // // add paramters
+      // _.difference(matches, paramNames).forEach(function(paramName) {
+      //   $scope.dataset.params.push({
+      //     name: paramName,
+      //     type: 'String',
+      //     defaultValue: ''
+      //   });
+      // });
 
-      // add new paramters
-      _.difference(matches, paramNames).forEach(function(paramName) {
-        $scope.dataset.params.push({
-          name: paramName,
-          type: 'String',
-          defaultValue: ''
-        });
-      });
+      // // mark parameters unused
+      // var params = _.indexBy($scope.dataset.params, 'name');
+      // $scope.dataset.params.forEach(function(param) {
+      //   param.warning = null;
+      // });
 
-      // mark parameters unused
-      var params = _.indexBy($scope.dataset.params, 'name');
-      $scope.dataset.params.forEach(function(param) {
-        param.warning = null;
-      });
-
-      _.difference(paramNames, matches).forEach(function(paramName) {
-        params[paramName].warning =
-          'Parameter "' + paramName + '" not used in query';
-      });
+      // _.difference(paramNames, matches).forEach(function(paramName) {
+      //   params[paramName].warning =
+      //     'Parameter "' + paramName + '" not used in query';
+      // });
 
     };
 
@@ -190,6 +172,24 @@ angular.module('gasp.dataset.edit', [
         }
       }).result.then(function() {
         // TODO: alert of settings updated
+      });
+    };
+
+    $scope.openSchemaBrowser = function() {
+      $modal.open({
+        templateUrl: 'dataset/schema.modal.tpl.html',
+        controller: 'DatasetSchemaCtrl',
+        backdrop: 'static',
+        resolve: {
+          selection: function() {
+            return $scope.editor.getSelection();
+          }
+        }
+      }).result.then(function(obj) {
+        if (!$scope.editor.somethingSelected()) {
+          var ed = $scope.editor;
+          ed.replaceRange(obj.name + ' ', ed.getCursor());
+        }
       });
     };
 

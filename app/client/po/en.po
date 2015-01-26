@@ -12,9 +12,21 @@ msgstr ""
 "X-Generator: Poedit 1.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: app/dataset/schema.modal.tpl.html
+msgid "Analyze"
+msgstr "Analyze"
+
+#: app/dataset/settings.modal.tpl.html
+msgid "Are you sure you want to delete this dataset?"
+msgstr "Are you sure you want to delete this dataset?"
+
 #: app/home/home.tpl.html
 msgid "Browse all"
 msgstr "Browse all"
+
+#: app/dataset/schema.modal.tpl.html
+msgid "Cancel"
+msgstr "Cancel"
 
 #: app/components/erroralert/erroralert.tpl.html
 msgid "Close"
@@ -27,6 +39,10 @@ msgstr "Copy"
 #: app/home/home.tpl.html
 msgid "Create a new dataset"
 msgstr "Create a new dataset"
+
+#: app/dataset/settings.modal.tpl.html
+msgid "Dataset Settings"
+msgstr "Dataset Settings"
 
 #: app/dataset/edit.tpl.html app/home/home.tpl.html
 msgid "Datasets"
@@ -60,6 +76,14 @@ msgstr "Name"
 msgid "New"
 msgstr "New"
 
+#: app/dataset/settings.modal.tpl.html
+msgid "No"
+msgstr "No"
+
+#: app/dataset/schema.modal.tpl.html
+msgid "Ok"
+msgstr "Ok"
+
 #: app/login/login.tpl.html
 msgid "Password"
 msgstr "Password"
@@ -84,6 +108,10 @@ msgstr "SQL"
 msgid "Save"
 msgstr "Save"
 
+#: app/dataset/schema.modal.tpl.html
+msgid "Schema Browser"
+msgstr "Schema Browser"
+
 #: app/dataset/new.modal.tpl.html app/dataset/settings.modal.tpl.html
 msgid "Title"
 msgstr "Title"
@@ -95,6 +123,10 @@ msgstr "Unable to login. Please try again."
 #: app/login/login.tpl.html
 msgid "Username"
 msgstr "Username"
+
+#: app/dataset/settings.modal.tpl.html
+msgid "Yes"
+msgstr "Yes"
 
 #~ msgid "Please login to Jasp"
 #~ msgstr "Please login to Jasp"

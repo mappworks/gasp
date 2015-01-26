@@ -1,0 +1,35 @@
+<div class="gasp-dataset-schema">
+  <div class="modal-header">
+    <h5 class="modal-title" translate>Schema Browser</h5>
+  </div>
+  <div class="modal-body">
+    <label>Table</label>
+    <ui-select ng-model="table" theme="bootstrap" reset-search-input="false"
+      on-select="tableSelected($item)">
+      <ui-select-match placeholder="Enter a table or view name...">
+        {{$select.selected.name}}
+      </ui-select-match>
+      <ui-select-choices repeat="t in tables | filter: $select.search"
+        group-by="groupTable">
+        <div ng-bind-html="t.name | highlight: $select.search">
+        </div>
+      </ui-select-choices>
+    </ui-select>
+    <div class="columns">
+      <table ng-table="tableOpts"
+        class="table table-condensed table-hover">
+        <tr ng-repeat="col in $data" ng-click="selectColumn(col)">
+            <td data-title="'Column'">{{col.name}}</td>
+            <td data-title="'Type'">{{col.type}}</td>
+            <td><i class="icon-bars"></i> <a href="" tooltip="Coming Soon" translate>Analyze</a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <span>
+      <button class="btn btn-primary" ng-click="ok()" translate>Ok</button>
+      <button class="btn btn-warning" ng-click="cancel()" translate>Cancel</button>
+    </span>
+  </div>
+</div>
