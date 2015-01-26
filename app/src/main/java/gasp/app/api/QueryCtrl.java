@@ -2,9 +2,7 @@ package gasp.app.api;
 
 import gasp.core.db.Query;
 import gasp.core.db.QueryResult;
-import gasp.core.db.Row;
 import gasp.core.db.Task;
-import gasp.core.util.GaspIterator;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,9 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.sql.Connection;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.stream.StreamSupport;
 
 @Controller
 @RequestMapping("/api/query")
@@ -35,6 +30,5 @@ public class QueryCtrl extends BaseCtrl {
                 return query.run(null).then((v) -> callback.accept(self));
             }
         });
-
     }
 }

@@ -3,7 +3,6 @@ package gasp.app.api;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import gasp.app.App;
 import gasp.core.Gasp;
 import gasp.core.util.Json.DateSerializer;

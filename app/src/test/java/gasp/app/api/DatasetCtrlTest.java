@@ -12,7 +12,6 @@ import org.mockito.InjectMocks;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;

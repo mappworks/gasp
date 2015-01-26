@@ -11,9 +11,9 @@ import org.junit.Test;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
+import static gasp.core.catalog.Catalog.TABLE_INFO;
 import static gasp.core.db.DbUtil.run;
 import static java.lang.String.format;
-import static gasp.core.catalog.Catalog.TABLE_INFO;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

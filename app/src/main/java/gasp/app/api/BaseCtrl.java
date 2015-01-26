@@ -4,8 +4,8 @@ import gasp.app.App;
 import gasp.app.db.DataSourceProvider;
 import gasp.core.catalog.Catalog;
 import gasp.core.db.Task;
-import gasp.core.util.GaspIterator;
 import gasp.core.util.Function;
+import gasp.core.util.GaspIterator;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.sql.DataSource;
