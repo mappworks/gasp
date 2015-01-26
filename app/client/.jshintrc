@@ -3,7 +3,7 @@
   "eqeqeq": false,
   "indent": 2,
   "latedef": true,
-  "newcap": true,
+  "newcap": false,
   "nonew": true,
   "quotmark": "single",
   "undef": true,
