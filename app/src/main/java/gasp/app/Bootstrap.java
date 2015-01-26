@@ -1,5 +1,7 @@
 package gasp.app;
 
+import com.codahale.metrics.JmxReporter;
+import com.codahale.metrics.MetricRegistry;
 import gasp.app.App.State;
 import gasp.app.db.CachingDataSourceProvider;
 import gasp.app.db.DataSourceProvider;
@@ -40,6 +42,17 @@ public class Bootstrap implements ApplicationContextAware {
     @Bean(name = "app")
     public App app(Config config) {
         return new App().state(State.STARTING).context(appContext).config(config);
+    }
+
+    @Bean(name = "metrics")
+    public MetricRegistry metrics() {
+        // create a new metric registry
+        MetricRegistry metrics = new MetricRegistry();
+
+        // enable jmx reporting
+        JmxReporter.forRegistry(metrics).build().start();
+
+        return metrics;
     }
 
     @Bean(name = "dataSourceProvider")

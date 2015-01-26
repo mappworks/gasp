@@ -1,5 +1,6 @@
 package gasp.app.db;
 
+import com.codahale.metrics.MetricRegistry;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import gasp.app.App;
@@ -24,6 +25,9 @@ public class DefaultDataSourceProvider implements DataSourceProvider {
     @Autowired
     App app;
 
+    @Autowired
+    MetricRegistry metrics;
+
     String dbUrl;
 
     @PostConstruct
@@ -34,6 +38,8 @@ public class DefaultDataSourceProvider implements DataSourceProvider {
     @Override
     public DataSource get(User user, App app) throws Exception {
         HikariConfig dbConfig = new HikariConfig();
+        dbConfig.setPoolName("DefaultConnectionPool");
+
         //dbConfig.setDriverClassName("com.impossibl.postgres.jdbc.PGDriver");
         dbConfig.setDriverClassName("org.postgresql.Driver");
         dbConfig.setJdbcUrl(dbUrl);
@@ -44,6 +50,8 @@ public class DefaultDataSourceProvider implements DataSourceProvider {
         // always reset search_path before giving back connection
         dbConfig.setConnectionInitSql("SET search_path TO default");
 
+        // set metrics
+        dbConfig.setMetricRegistry(metrics);
         return new HikariDataSource(dbConfig);
     }
 

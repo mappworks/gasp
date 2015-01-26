@@ -78,7 +78,6 @@ project(":gasp-core") {
     // spatial
     compile "com.vividsolutions:jts:1.13"
 
-
     // logging
     compile "org.slf4j:slf4j-api:$slf4jVersion"
     compile "org.slf4j:jcl-over-slf4j:$slf4jVersion"
@@ -95,6 +94,7 @@ project(":gasp-core") {
       exclude(group: 'com.vividsolutions', module: 'jts')
     }
     compile "org.ocpsoft.prettytime:prettytime:1.0.8.Final"
+    compile "com.codahale.metrics:metrics-core:3.0.2"
 
     provided "javax.servlet:javax.servlet-api:3.0.1"
 
