@@ -1,5 +1,6 @@
 package gasp.app.api;
 
+import com.google.common.io.Files;
 import gasp.app.App;
 import gasp.app.db.DataSourceProvider;
 import gasp.core.catalog.Catalog;
@@ -7,16 +8,27 @@ import gasp.core.db.Task;
 import gasp.core.util.Function;
 import gasp.core.util.GaspIterator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 /**
  * Base class for api controllers.
  */
 public class BaseCtrl {
+
+    static final MediaType APPLICATION_GEOJSON = MediaType.valueOf("application/vnd.geo+json");
+    static final String APPLICATION_GEOJSON_VALUE = APPLICATION_GEOJSON.toString();
 
     @Autowired
     protected App app;
@@ -103,7 +115,20 @@ public class BaseCtrl {
         }
     }
 
-    protected Integer toInt(String val) {
-        return Integer.parseInt(val);
+    /**
+     * mapping of filename to extension
+     * TODO: make this pluggable
+     */
+    static Map<String,MediaType> MAPPINGS = new LinkedHashMap<>();
+    static {
+        MAPPINGS.put("json", APPLICATION_JSON);
+        MAPPINGS.put("geojson", APPLICATION_GEOJSON);
+    }
+
+    Optional<MediaType> responseFormat(HttpServletRequest req) {
+        // look at accepts header
+        Optional<String> header = Optional.ofNullable(req.getHeader(HttpHeaders.ACCEPT));
+        Optional<MediaType> type = header.map(MediaType::valueOf).filter((t) -> !t.equals(MediaType.ALL));
+        return Optional.ofNullable(type.orElseGet(() -> MAPPINGS.get(Files.getFileExtension(req.getRequestURI()))));
     }
 }

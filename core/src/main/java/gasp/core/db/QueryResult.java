@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.google.common.base.Throwables;
 import com.google.common.collect.AbstractIterator;
+import com.vividsolutions.jts.geom.Geometry;
 import gasp.core.db.QueryResult.Serializer;
 
 import java.io.IOException;
@@ -36,6 +37,11 @@ public class QueryResult extends AbstractIterator<Row> {
         this.rs = rs;
         this.q = q;
         this.row = new Row(rs, this);
+    }
+
+    QueryResult(QueryResult other) {
+        this(other.rs, other.q);
+        this.callback = other.callback;
     }
 
     /**
@@ -84,6 +90,13 @@ public class QueryResult extends AbstractIterator<Row> {
         }
     }
 
+    /**
+     * Returns the query result object in a form serializable as GeoJson.
+     */
+    public QueryResult toGeoJson() {
+        return new GeoJsonQueryResult(this);
+    }
+
     static class Serializer extends StdSerializer<QueryResult> {
 
         Serializer() {
@@ -113,6 +126,66 @@ public class QueryResult extends AbstractIterator<Row> {
             }
             jg.writeEndArray();
 
+            jg.writeEndObject();
+        }
+    }
+
+    @JsonSerialize(using = GeoJsonSerializer.class)
+    class GeoJsonQueryResult extends QueryResult {
+        QueryResult result;
+        GeoJsonQueryResult(QueryResult result) {
+            super(result);
+        }
+    }
+
+    static class GeoJsonSerializer extends StdSerializer<GeoJsonQueryResult> {
+
+        GeoJsonSerializer() {
+            super(GeoJsonQueryResult.class);
+        }
+
+        @Override
+        public void serialize(GeoJsonQueryResult result, JsonGenerator jg, SerializerProvider provider)
+                throws IOException, JsonGenerationException {
+
+            jg.writeStartObject();
+            jg.writeStringField("type", "FeatureCollection");
+            jg.writeArrayFieldStart("features");
+
+            List<Column> cols = result.columns();
+            for (Iterator<Row> it = result; it.hasNext(); ) {
+                Row row = it.next();
+                jg.writeStartObject();
+
+                jg.writeStringField("type", "Feature");
+
+                // properties
+                jg.writeObjectFieldStart("properties");
+
+                Geometry geo = null;
+                List<Object> vals = row.list();
+                for (int i = 0; i < cols.size(); i++) {
+
+
+                    Object val = vals.get(i);
+                    if (val instanceof Geometry && geo == null) {
+                        geo = (Geometry) val;
+                        continue;
+                    }
+                    jg.writeObjectField(cols.get(i).name(), val);
+                }
+
+                jg.writeEndObject();
+
+                // geometry
+                if (geo != null) {
+                    jg.writeObjectField("geometry", geo);
+                }
+
+                jg.writeEndObject();
+            }
+
+            jg.writeEndArray();
             jg.writeEndObject();
         }
     }
