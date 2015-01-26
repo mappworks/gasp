@@ -34,7 +34,7 @@ public class BaseCtrl {
     protected <T> GaspIterator<T> streamWithCatalog(Function<Catalog,Iterator<T>> f) throws Exception {
         Catalog cat = app.catalog();
         try {
-            return new GaspIterator<>(f.apply(cat)).onFinish((v) -> app.release(cat));
+            return new GaspIterator<>(f.apply(cat)).then((v) -> app.release(cat));
         }
         catch(Exception e) {
             app.release(cat);
@@ -56,8 +56,14 @@ public class BaseCtrl {
                 @Override
                 public T run(Connection cx) throws Exception {
                     T result = t.run(cx);
-                    callback.accept(t);
+                    callback.accept(this);
                     return result;
+                }
+
+                @Override
+                public void close() {
+                    t.close();
+                    super.close();
                 }
             };
             return q;
