@@ -142,6 +142,7 @@ public class Query implements AutoCloseable {
 
     public static class QueryBuilder {
         static Pattern PARAM_REGEX = Pattern.compile("\\$\\{(\\w+)\\}");
+        static Pattern TRAILING_SEMI = Pattern.compile(";$");
 
         boolean paged = false;
         boolean raw = false;
@@ -173,8 +174,12 @@ public class Query implements AutoCloseable {
         }
 
         String preCompile(String sql) {
+            // trim and strip off semicolon
+            Matcher m = TRAILING_SEMI.matcher(sql.trim());
+            sql = m.replaceAll("");
+
             // find all parameters placeholders
-            Matcher m = PARAM_REGEX.matcher(sql);
+            m = PARAM_REGEX.matcher(sql);
             while (m.find()) {
                 String p = m.group(1);
                 params.add(p);
