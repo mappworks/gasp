@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -250,5 +251,22 @@ public class Catalog extends DbSupport {
         }
 
         protected abstract T doRun(Connection cx) throws Exception;
+
+        @Override
+        protected void close(Object obj) {
+            if (obj instanceof Connection) {
+                // reset the search_path before we give the connection back
+                Connection cx = (Connection) obj;
+                try {
+                    try (Statement st = cx.createStatement()) {
+                        st.execute("SET search_path TO default");
+                    }
+                }
+                catch(Exception e) {
+                    LOG.warn("Error occurred resetting connection search_path", e);
+                }
+            }
+            super.close(obj);
+        }
     }
 }
