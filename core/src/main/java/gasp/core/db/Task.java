@@ -39,8 +39,18 @@ public abstract class Task<T> implements AutoCloseable {
         }
 
         while(!open.isEmpty()) {
-            closeSafe(open.pop());
+            close(open.pop());
         }
         open = null;
+    }
+
+    /**
+     * Subclass hook called when a resource is being closed.
+     * <p>
+     * Any overriding implementation should call super.
+     * </p>
+     */
+    protected void close(Object obj) {
+        closeSafe(obj);
     }
 }
