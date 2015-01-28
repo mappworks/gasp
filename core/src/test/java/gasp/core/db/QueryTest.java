@@ -53,7 +53,7 @@ public class QueryTest {
     @Test
     public void testPaged() throws Exception {
         try (Connection cx = db.conn()) {
-            Query q = Query.build("SELECT * FROM states").paged().compile(cx);
+            Query q = Query.build("SELECT * FROM states").compile(cx);
 
             assertThat(size(q.page(10, null).run(null)), is(10));
             assertThat(size(q.page(null, 40).run(null)), is(12));
@@ -63,7 +63,7 @@ public class QueryTest {
     @Test
     public void testGeometry() throws Exception {
         try (Connection cx = db.conn()) {
-            QueryResult r = Query.build("SELECT geom FROM states").paged().compile(cx).page(1,0).run(null);
+            QueryResult r = Query.build("SELECT geom FROM states").compile(cx).page(1,0).run(null);
             assertTrue(r.hasNext());
 
             Object obj = r.next().get(0);

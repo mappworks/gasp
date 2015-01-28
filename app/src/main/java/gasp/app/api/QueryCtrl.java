@@ -30,7 +30,7 @@ public class QueryCtrl extends BaseCtrl {
         return run((callback) -> new Task<QueryResult>() {
             @Override
             public QueryResult run(Connection cx) throws Exception {
-                Query query = Query.build(q).paged().compile(cx);
+                Query query = Query.build(q).compile(cx);
                 query.page(n, n*p).run(null);
 
                 QueryResult result = query.run(null);

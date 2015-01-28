@@ -1,15 +1,20 @@
 package gasp.core.db;
 
 import com.google.common.base.Preconditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,6 +42,8 @@ import static java.lang.String.format;
  */
 public class Query implements AutoCloseable {
 
+    static Logger LOG = LoggerFactory.getLogger(Query.class);
+
     QueryBuilder builder;
     PreparedStatement st;
 
@@ -59,12 +66,9 @@ public class Query implements AutoCloseable {
     /**
      * Sets the limit/offset of the query.
      * <p>
-     * The query must be created as paged by calling {@link gasp.core.db.Query.QueryBuilder#paged()}.
-     * </p>
-     * <p>
      * This method should be called before {@link #run(java.util.Map)}. Example:
      * <pre>
-     * Query q = Query.build("SELECT * FROM foo").paged().compile(conn);
+     * Query q = Query.build("SELECT * FROM foo").compile(conn);
      * q.page(100,10).run();
      * </pre>
      * </p>
@@ -73,8 +77,6 @@ public class Query implements AutoCloseable {
      * @param offset The offset (number of records to skip), may be <tt>null</tt> meaning offset zero.
      */
     public Query page(Integer limit, Integer offset) throws SQLException {
-        Preconditions.checkState(builder.paged, "Can't call page() on a non-paged query");
-
         st.setInt(builder.params.size()+1, limit != null ? limit : Integer.MAX_VALUE);
         st.setInt(builder.params.size()+2, offset != null ? offset : 0);
         return this;
@@ -129,6 +131,12 @@ public class Query implements AutoCloseable {
             st.setObject(i+1, val);
         }
 
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(SQL.MARKER, DbUtil.log(builder.sql.buffer(), (i) -> {
+                Optional<String> arg = Optional.ofNullable(i < params.size() ? params.get(i) : null);
+                return arg.map((a) -> args.get(a)).orElse(null);
+            }));
+        }
         return new QueryResult(st.executeQuery(), this);
     }
 
@@ -144,7 +152,6 @@ public class Query implements AutoCloseable {
         static Pattern PARAM_REGEX = Pattern.compile("\\$\\{(\\w+)\\}");
         static Pattern TRAILING_SEMI = Pattern.compile(";$");
 
-        boolean paged = false;
         boolean raw = false;
         SQL sql;
         List<String> params = new ArrayList<>();
@@ -153,24 +160,40 @@ public class Query implements AutoCloseable {
             sql = new SQL(preCompile(q));
         }
 
-        public QueryBuilder paged() {
-            sql.a(" LIMIT ? OFFSET ?");
-            paged = true;
-            return this;
-        }
-
         public QueryBuilder raw() {
             raw = true;
             return this;
         }
 
         public Query compile(Connection cx) throws SQLException {
-            Query q = new Query(cx.prepareStatement(sql.toString()), this);
-            if (paged) {
-                // default paging defaults
+            // first we "sniff" the query in order to get metadata about it
+            String raw = sql.toString();
+
+            try (PreparedStatement st =
+                 cx.prepareStatement(format("SELECT * FROM (%s) AS _ LIMIT 0", raw))) {
+
+                // fill in null for all parameters
+                for (int i = 0; i < st.getParameterMetaData().getParameterCount(); i++) {
+                    st.setObject(i+1, null);
+                }
+
+                // execute the query and start rewriting
+                SQL rw = new SQL("SELECT ");
+                try (ResultSet rs = st.executeQuery()) {
+                    ResultSetMetaData meta = rs.getMetaData();
+                    for (int j = 0; j < meta.getColumnCount(); j++) {
+                        rw.a(meta.getColumnName(j + 1)).a(",");
+                    }
+                    rw.trim(1);
+                }
+                rw.a(" FROM (%s) AS _ LIMIT ? OFFSET ?", raw);
+
+                sql = rw;
+
+                Query q = new Query(cx.prepareStatement(rw.toString()), this);
                 q.page(null, null);
+                return q;
             }
-            return q;
         }
 
         String preCompile(String sql) {
