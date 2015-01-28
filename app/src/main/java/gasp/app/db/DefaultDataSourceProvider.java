@@ -47,11 +47,9 @@ public class DefaultDataSourceProvider implements DataSourceProvider {
         dbConfig.setUsername(user.handle());
         dbConfig.setPassword(new String(user.password()));
 
-        // always reset search_path before giving back connection
-        dbConfig.setConnectionInitSql("SET search_path TO default");
-
         // set metrics
         dbConfig.setMetricRegistry(metrics);
+
         return new HikariDataSource(dbConfig);
     }
 
