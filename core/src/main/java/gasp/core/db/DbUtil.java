@@ -17,6 +17,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
 
 import static gasp.core.Config.GROUP_DATABASE;
 
@@ -184,5 +187,22 @@ public class DbUtil {
             Throwables.propagateIfInstanceOf(e, SQLException.class);
             throw Throwables.propagate(e);
         }
+    }
+
+    /**
+     * Encodes an SQL statement with parameters into log form.
+     *
+     * @param sql The sql with parameter markers ('?')
+     * @param params Function to provide values for parameter markers
+     */
+    public static String log(CharSequence sql, Function<Integer,Object> params) {
+        StringBuilder copy = new StringBuilder(sql);
+        int i = -1;
+        int j = 0;
+        while((i = copy.indexOf("?", i+1)) > 0) {
+            String val = Optional.ofNullable(params.apply(j++)).map(Objects::toString).orElse("?");
+            copy.replace(i, i + 1, val);
+        }
+        return copy.toString();
     }
 }

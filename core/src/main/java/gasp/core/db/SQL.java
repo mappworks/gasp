@@ -140,13 +140,9 @@ public class SQL {
     }
 
     String toLog() {
-        StringBuilder copy = new StringBuilder(buf);
-        int i = -1;
-        Iterator<Arg> a = params.iterator();
-        while((i = copy.indexOf("?", i+1)) > 0 && a.hasNext()) {
-            copy.replace(i, i+1, Optional.ofNullable(a.next().value).map((v) -> v.toString()).orElse("null"));
-        }
-        return copy.toString();
+        return DbUtil.log(buf,  (i) -> {
+            return i < params.size() ? params.get(i) : null;
+        });
     }
 
     /**
