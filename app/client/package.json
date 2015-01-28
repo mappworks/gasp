@@ -6,7 +6,9 @@
   "author": "Justin Deoliveira <jdeolive@gmail.com>",
   "repository": "http://github.com/jdeolive/gasp",
   "license": "Apache-2.0",
-  "scripts": {},
+  "scripts": {
+    "install": "bower install && grunt clean dist"
+  },
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-angular-gettext": "^0.2.15",
