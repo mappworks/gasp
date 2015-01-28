@@ -21,19 +21,9 @@ angular.module('gasp.dataset.edit', [
         'Ctrl-S': function(cm) {
           $scope.save();
         },
-        // 'Ctrl-F': function(cm) {
-        //   var pos = cm.getCursor();
-        //   while(pos.line > 0 && cm.isFolded(pos)) {
-        //     pos = {line: pos.line-1, ch:0};
-        //   }
-        //   cm.foldCode(pos, {
-        //     rangeFinder: CodeMirror.fold.indent,
-        //     scanUp: true
-        //   });
-        // },
-        // tab remapping taken from:
-        //   https://gist.github.com/danieleds/326903084a196055a7c3
         'Tab': function (cm) {
+          // tab remapping taken from:
+          //   https://gist.github.com/danieleds/326903084a196055a7c3
           if (cm.somethingSelected()) {
             var sel = cm.getSelection('\n');
             var cur = cm.getCursor();
@@ -115,15 +105,35 @@ angular.module('gasp.dataset.edit', [
       $scope.params = matches;
     };
 
+    $scope.renderQuery = function() {
+      Api.query.run($scope.dataset.query, null, 'geojson').then(
+          function(result) {
+            $scope.geojson = {
+              data: result.data
+            };
+          },
+          function(result) {
+            $scope.error = result.data;
+          });
+    };
     $scope.save = function() {
-      // save
-      Api.dataset.update($scope.dataset).then(function(result) {
-        // on success render the result
-        Api.query.run($scope.dataset.query, 'geojson').then(function(result) {
-          $scope.geojson = {
-            data: result.data
-          };
+      // reset the error/saved state
+      $scope.error = null;
+      $scope.saved = false;
+
+      // test the query
+      var query = $scope.dataset.query;
+      Api.query.run(query, 0).then(function(result) {
+        // success, save the the query
+        Api.dataset.update($scope.dataset).then(function(result) {
+          // on success render the result
+          $scope.saved = true;
+          $scope.renderQuery();
+        }, function(result) {
+          $scope.error = result.data;
         });
+      }, function(result) {
+        $scope.error = result.data;
       });
     };
 
@@ -178,6 +188,9 @@ angular.module('gasp.dataset.edit', [
     Api.dataset.get($stateParams.id)
       .then(function(result) {
         $scope.dataset = result.data;
+
+        // render the query
+        $scope.renderQuery();
       });
   })
 .directive('paramType', function($log) {

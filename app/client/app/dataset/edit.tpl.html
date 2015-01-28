@@ -28,11 +28,18 @@
       </div>
     </div>
     <div class="col-md-6">
-      <div class="clearfix">
-        <div class="pull-right">
-          <button class="btn btn-primary" ng-click="save()" translate>
-            Save
-          </button>
+      <div class="topbar">
+        <div class="row">
+          <div class="col-xs-10">
+            <alert ng-if="saved" type="success">Saved.</alert>
+            <error-alert ng-if="error" error="error">
+            </error-alert>
+          </div>
+          <div class="col-xs-2 text-right">
+            <button class="btn btn-primary" ng-click="save()" translate>
+              Save
+            </button>
+          </div>
         </div>
       </div>
       <div class="editor">
