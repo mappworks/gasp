@@ -9,9 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 import static java.lang.String.format;
 
@@ -105,6 +103,14 @@ public class SQL {
      */
     public SQL p(Object val, int type) {
         params.add(new Arg(val, type));
+        return this;
+    }
+
+    /**
+     * Trims n characters from the buffer.
+     */
+    public SQL trim(int n) {
+        buf.setLength(buf.length()-1);
         return this;
     }
 
