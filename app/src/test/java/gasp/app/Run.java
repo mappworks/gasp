@@ -28,7 +28,7 @@ public class Run {
         context.setResourceBase("src/main/webapp/");
         context.setContextPath("/gasp");
         context.setParentLoaderPriority(true);
-        context.setWelcomeFiles(new String[]{"index.html"});
+        context.setWelcomeFiles(new String[]{"app/"});
 
         // there is an issue with jetty not picking up classes for ServletContainerInitializers that
         // pull in classes from the classpath that are not in a jar, so we do it manually here
