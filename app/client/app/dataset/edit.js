@@ -18,6 +18,9 @@ angular.module('gasp.dataset.edit', [
       gutters: [''],
       extraKeys: {
         'Ctrl-Space': 'autocomplete',
+        'Ctrl-S': function(cm) {
+          $scope.save();
+        },
         // 'Ctrl-F': function(cm) {
         //   var pos = cm.getCursor();
         //   while(pos.line > 0 && cm.isFolded(pos)) {
