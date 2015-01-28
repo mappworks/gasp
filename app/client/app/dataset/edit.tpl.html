@@ -23,7 +23,8 @@
         </div>
       </div>
       <div>
-        <leaflet defaults="mapOpts" width="100%" height="512px"></leaflet>
+        <!-- <leaflet defaults="mapOpts" ></leaflet> -->
+        <leaflet geojson="geojson" width="100%" height="512px"></leaflet>
       </div>
     </div>
     <div class="col-md-6">
@@ -43,28 +44,16 @@
             <div ui-codemirror="{ onLoad : onEditorLoad }"
               ui-codemirror-opts="editorOpts" ng-model="dataset.query">
             </div>
+            <!--
             <div class="query-params gasp-panel">
               <div class="panel-header">
                 <h5 translate>Query Parameters</h5>
                 <div class="pull-right">
                   <i class="fa fa-question-circle clickable"></i>
                 </div>
-                <!--label class="checkbox">
-                  <input type="checkbox" ng-model="autoDetectParams"></input>
-                  Auto-detect from query
-                </label-->
               </div>
               <form name="form">
                 <table st-table="dataset.params" class="table table-striped">
-                  <!-- <thead>
-                    <tr>
-                      <th width="10%"></th>
-                      <th width="15%">Name</th>
-                      <th width="25%">Type</th>
-                      <th width="25%">Default</th>
-                      <th width="10%"></th>
-                    </tr>
-                  </thead> -->
                   <tbody>
                     <tr ng-repeat="p in dataset.params">
                       <td class="text-center" width="10%">
@@ -93,6 +82,7 @@
                 </table>
               </form>
             </div>
+            -->
           </tab>
           <tab>
             <tab-heading>

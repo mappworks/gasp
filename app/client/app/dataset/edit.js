@@ -72,23 +72,7 @@ angular.module('gasp.dataset.edit', [
     };
 
     // initialze the map
-    $scope.mapOpts = {
-      // tileLayer: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
-    };
     leafletData.getMap().then(function(map) {
-      var osm =
-        L.tileLayer(
-          'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution:
-            '&copy; <a href="http://www.openstreetmap.org/copyright">'+
-              'OpenStreetMap</a>'
-        }).addTo(map);
-
-      var baseMaps = {
-        'OSM Classic': osm
-      };
-
-      L.control.layers(baseMaps).addTo(map);
       $scope.map = map;
     });
 
@@ -126,38 +110,18 @@ angular.module('gasp.dataset.edit', [
       }
 
       $scope.params = matches;
-      // // add paramters
-      // _.difference(matches, paramNames).forEach(function(paramName) {
-      //   $scope.dataset.params.push({
-      //     name: paramName,
-      //     type: 'String',
-      //     defaultValue: ''
-      //   });
-      // });
-
-      // // mark parameters unused
-      // var params = _.indexBy($scope.dataset.params, 'name');
-      // $scope.dataset.params.forEach(function(param) {
-      //   param.warning = null;
-      // });
-
-      // _.difference(paramNames, matches).forEach(function(paramName) {
-      //   params[paramName].warning =
-      //     'Parameter "' + paramName + '" not used in query';
-      // });
-
     };
 
     $scope.save = function() {
-      Api.dataset.update($scope.dataset)
-        .then(function(result) {
-          if (result.success) {
-
-          }
-          else {
-
-          }
+      // save
+      Api.dataset.update($scope.dataset).then(function(result) {
+        // on success render the result
+        Api.query.run($scope.dataset.query, 'geojson').then(function(result) {
+          $scope.geojson = {
+            data: result.data
+          };
         });
+      });
     };
 
     $scope.openSettings = function() {

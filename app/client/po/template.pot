@@ -88,10 +88,6 @@ msgid "Please login to gasp"
 msgstr ""
 
 #: app/dataset/edit.tpl.html
-msgid "Query Parameters"
-msgstr ""
-
-#: app/dataset/edit.tpl.html
 msgid "Results"
 msgstr ""
 

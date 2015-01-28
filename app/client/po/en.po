@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: gasp 0.1\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
+"Last-Translator: Justin Deoliveira <jdeolive@gmail.com>\n"
 "Language-Team: \n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
@@ -93,10 +93,6 @@ msgid "Please login to gasp"
 msgstr "Please login to gasp"
 
 #: app/dataset/edit.tpl.html
-msgid "Query Parameters"
-msgstr "Query Parameters"
-
-#: app/dataset/edit.tpl.html
 msgid "Results"
 msgstr "Results"
 
@@ -127,6 +123,9 @@ msgstr "Username"
 #: app/dataset/settings.modal.tpl.html
 msgid "Yes"
 msgstr "Yes"
+
+#~ msgid "Query Parameters"
+#~ msgstr "Query Parameters"
 
 #~ msgid "Please login to Jasp"
 #~ msgstr "Please login to Jasp"
