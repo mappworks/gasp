@@ -110,8 +110,19 @@ project(":gasp-app") {
     with war
   }
 
-  war.dependsOn explodeWar
+  task buildClient(type:Exec) {
+    workingDir 'client'
+    commandLine 'npm', 'install'
+  }
+
+  war.dependsOn buildClient, explodeWar
   war.archiveName = "gasp.war"
+  war {
+    from ('client/build') {
+      include '**/*'
+      into 'client'
+    }
+  }
 
   dependencies {
     compile project(":gasp-core")
