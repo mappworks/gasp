@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
-import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
@@ -37,8 +36,8 @@ public class QueryCtrl extends BaseCtrl {
                 QueryResult result = query.run(null);
                 result.then((v) -> callback.accept(this));
 
-                Optional<MediaType> format = responseFormat(req);
-                return APPLICATION_GEOJSON.equals(format.orElse(APPLICATION_JSON)) ? result.toGeoJson() : result;
+                MediaType format = responseFormat(req).orElse(APPLICATION_JSON);
+                return APPLICATION_GEOJSON.equals(format) ? result.toGeoJson() : result;
             }
         });
     }
