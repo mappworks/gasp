@@ -115,6 +115,15 @@ public class SQL {
     }
 
     /**
+     * Replace the sql buffer with the specified content.
+     */
+    public SQL replace(String str) {
+        buf.setLength(0);
+        buf.append(str);
+        return this;
+    }
+
+    /**
      * Logs the statement to the specified logger at the debug level.
      */
     public SQL log(Logger log) {
