@@ -131,7 +131,7 @@ public class Db extends ExternalResource {
                 @Override
                 public Void run(Connection cx) throws Exception {
                     open(new SQL("CREATE SCHEMA IF NOT EXISTS %s", SCHEMA).compile(cx)).executeUpdate();
-                    open(new SQL("SET search_path TO %s", SCHEMA).compile(cx)).executeUpdate();
+                    open(new SQL("SET search_path TO %s,public", SCHEMA).compile(cx)).executeUpdate();
                     return null;
                 }
             }, cx);
