@@ -1,5 +1,7 @@
 package gasp.core.db;
 
+import com.google.common.collect.Sets;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import gasp.core.test.Db;
 import gasp.core.test.TestData;
@@ -9,6 +11,7 @@ import org.junit.Test;
 
 import java.sql.Connection;
 import java.util.Collections;
+import java.util.Set;
 
 import static com.google.common.collect.Iterators.size;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -69,6 +72,21 @@ public class QueryTest {
             Object obj = r.next().get(0);
             assertNotNull(obj);
             assertThat(obj, instanceOf(Geometry.class));
+        }
+    }
+
+    @Test
+    public void testBounds() throws Exception {
+        try (Connection cx = db.conn()) {
+            Query q = Query.build("SELECT * FROM states").bound().compile(cx);
+            q.bounds(new Envelope(-109.060062, -102.042089, 36.993016,41.002359));
+
+            Set<String> states = Sets.newHashSet("UT", "AZ", "NM", "WY", "CO", "OK", "KS", "NE");
+
+            QueryResult r = q.run();
+            r.forEachRemaining((row) -> states.remove(row.get("state_abbr")));
+
+            assertThat("all states matched", states.isEmpty());
         }
     }
 }
