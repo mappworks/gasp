@@ -73,6 +73,29 @@ public class QueryResult extends AbstractIterator<Row> {
         }
     }
 
+    /**
+     * Returns the index (0-based) of the column in the result.
+     *
+     * @param column The column name.
+     *
+     * @return The optional column index.
+     */
+    public Optional<Integer> indexOf(String column) {
+        try {
+            ResultSetMetaData meta = rs.getMetaData();
+            for (int i = 0; i < meta.getColumnCount(); i++) {
+                if (column.equals(meta.getColumnName(i+1))) {
+                    return Optional.of(i);
+                }
+            }
+
+            return Optional.empty();
+        }
+        catch(SQLException e) {
+            throw Throwables.propagate(e);
+        }
+    }
+
     @Override
     protected Row computeNext() {
         try {
