@@ -45,12 +45,25 @@ public class Row {
      *
      * @param i Zero-based index.
      */
-    public Object get(int i) throws SQLException {
-        Object obj = rs.getObject(i+1);
-        if (obj instanceof PGobject) {
-            obj = handle((PGobject) obj);
+    public Object get(int i) {
+        try {
+            Object obj = rs.getObject(i+1);
+            if (obj instanceof PGobject) {
+                obj = handle((PGobject) obj);
+            }
+            return obj;
+        } catch (SQLException e) {
+            throw Throwables.propagate(e);
         }
-        return obj;
+    }
+
+    /**
+     * Gets the row value for the specified column name.
+     *
+     * @param name Column name.
+     */
+    public Object get(String name) {
+        return get(result.indexOf(name).orElseThrow(() -> new IllegalArgumentException("no such column named: "+name)));
     }
 
     Object handle(PGobject obj) {
