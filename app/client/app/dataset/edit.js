@@ -1,11 +1,11 @@
 /* global L*/
 angular.module('gasp.dataset.edit', [
   'gasp.core', 'ngSanitize', 'ui.codemirror', 'ui.select', 'ui.validate',
-  'smart-table', 'xeditable', 'leaflet-directive'
+  'smart-table', 'xeditable', 'leaflet-directive', 'ngStorage'
 ])
 .controller('DatasetEditCtrl',
-  function($scope, $state, $stateParams, $timeout, $modal, $log, _, leafletData,
-    Api) {
+  function($scope, $state, $stateParams, $timeout, $modal, $localStorage, $log, 
+    _, leafletData, Api) {
     $scope.id = $stateParams.id;
 
     // initialize the editor
@@ -67,6 +67,26 @@ angular.module('gasp.dataset.edit', [
     // initialze the map
     leafletData.getMap().then(function(map) {
       $scope.map = map;
+
+      // set bounds / level from local storage
+      var datasetId = $scope.id;
+      if (!(datasetId in $localStorage)) {
+        $localStorage[datasetId] = {
+          map: {
+            zoom: 1,
+            center: [0,0]
+          }
+        };
+      }
+
+      var mapSettings = $localStorage[datasetId].map;
+      map.setView(mapSettings.center, mapSettings.zoom);
+
+      map.on('moveend', function(e) {
+          var c = e.target.getCenter();
+          mapSettings.center = [c.lat, c.lng];
+          mapSettings.zoom = e.target.getZoom();
+      });
     });
 
     $scope.refreshMap = function() {

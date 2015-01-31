@@ -11,26 +11,44 @@ describe('DatasetEditCtrl', function() {
     http = $httpBackend;
 
     createCtrl = function(stateParams) {
-      return $controller('DatasetEditCtrl', {
+      var map = $q.defer();
+      var ctrl = $controller('DatasetEditCtrl', {
         $scope: scope,
         $state: {},
         $stateParams: stateParams,
         $timeout: $timeout,
         $modal: {},
+        $localStorage: {},
         $log: $log,
         _: _,
         leafletData: {
           getMap: function() {
-            return $q.defer().promise;
+            return map.promise;
           }
         },
         Api: Api
       });
+      map.resolve({
+        setView: function(){},
+        on: function(){},
+        getBounds: function() {
+          return {
+            toBBoxString: function() {
+              return '-180,-90,180.-90';
+            }
+          };
+        },
+        getSize: function() {
+          return {x: 512, y: 512};
+        }
+      });
+      return ctrl;
     };
 
   }));
 
   beforeEach(function() {
+    http.when('GET', /api\/query/).respond(200);
     http.when('GET', basePath + '/api/datasets/1').respond(200, {
       name: 'foo',
       query: 'select * from foo',
