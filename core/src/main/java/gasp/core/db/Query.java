@@ -121,8 +121,8 @@ public class Query implements AutoCloseable {
      * @param offset The offset (number of records to skip), may be <tt>null</tt> meaning offset zero.
      */
     public Query page(Integer limit, Integer offset) throws SQLException {
-        st.setInt(builder.params.size()+1, limit != null ? limit : Integer.MAX_VALUE);
-        st.setInt(builder.params.size()+2, offset != null ? offset : 0);
+        st.setInt(builder.params.size()+1, limit != null && limit > -1 ? limit : Integer.MAX_VALUE);
+        st.setInt(builder.params.size()+2, offset != null && limit > -1 ? offset : 0);
         return this;
     }
 
