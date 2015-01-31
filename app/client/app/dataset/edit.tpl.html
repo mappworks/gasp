@@ -23,8 +23,13 @@
         </div>
       </div>
       <div>
-        <!-- <leaflet defaults="mapOpts" ></leaflet> -->
-        <leaflet geojson="geojson" width="100%" height="512px"></leaflet>
+        <div class="map">
+          <div class="map-sidebar">
+            <i class="icon-loop-2 icon-clickable" ng-click="refreshMap()">
+            </i>
+          </div>
+          <leaflet geojson="geojson" width="95%" height="100%"></leaflet>
+        </div>
       </div>
     </div>
     <div class="col-md-6">

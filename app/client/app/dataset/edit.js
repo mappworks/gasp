@@ -69,6 +69,10 @@ angular.module('gasp.dataset.edit', [
       $scope.map = map;
     });
 
+    $scope.refreshMap = function() {
+      $scope.renderQuery();
+    };
+
     // functions for handling query parameters
     $scope.addParam = function() {
     };
@@ -106,15 +110,19 @@ angular.module('gasp.dataset.edit', [
     };
 
     $scope.renderQuery = function() {
-      Api.query.run($scope.dataset.query, null, 'geojson').then(
-          function(result) {
-            $scope.geojson = {
-              data: result.data
-            };
-          },
-          function(result) {
-            $scope.error = result.data;
-          });
+      Api.query.run($scope.dataset.query, 'geojson', {
+        bbox: $scope.map.getBounds().toBBoxString(),
+        width: $scope.map.getSize().x,
+        height: $scope.map.getSize().y
+      }).then(
+        function(result) {
+          $scope.geojson = {
+            data: result.data
+          };
+        },
+        function(result) {
+          $scope.error = result.data;
+        });
     };
     $scope.save = function() {
       // reset the error/saved state

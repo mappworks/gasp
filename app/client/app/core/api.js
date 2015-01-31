@@ -82,13 +82,11 @@ angular.module('gasp.api', [])
     },
 
     query: {
-      run: function(q, n, format) {
+      run: function(q, format, opts) {
+        opts = angular.extend(opts || {}, {q: q});
         return http({
           method: 'GET',
-          url: apiRoot + '/query.' + (format||'json') + '?' + $.param({
-            q: q,
-            n: n||50
-          })
+          url: apiRoot + '/query.' + (format||'json') + '?' + $.param(opts)
         });
       }
     }

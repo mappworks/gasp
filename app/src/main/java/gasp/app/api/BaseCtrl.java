@@ -138,4 +138,8 @@ public class BaseCtrl {
         Optional<String> header = Optional.ofNullable(req.getHeader(HttpHeaders.ACCEPT));
         return header.map((h) -> MediaType.valueOf(h.split(",")[0]));
     }
+
+    RequestParams params(HttpServletRequest req) {
+        return new RequestParams(req);
+    }
 }
