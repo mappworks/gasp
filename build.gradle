@@ -1,6 +1,10 @@
 import org.apache.tools.ant.filters.*
 import java.text.SimpleDateFormat
 
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.2'
+}
+
 buildscript {
   repositories {
     mavenCentral()
